@@ -13,12 +13,14 @@
     "<small style=\"color:#aaa;\">٠٤:٥٦ ص</small><br><b>[العاديين] Hatem</b>: هاي",
     "<small style=\"color:#27ae60;\">٠٥:٠٢ ص</small><br><b style=\"color:#27ae60;\">🟢 [نظام] انضم اللاعب \"Hatem\" بدور (العاديين)</b>",
     "<small style=\"color:#aaa;\">٠٥:٠٣ ص</small><br><b>[العاديين] Hatem</b>: Hi",
-    "<small style=\"color:#27ae60;\">٠٥:٠٣ ص</small><br><b style=\"color:#27ae60;\">🟢 [نظام] انضم اللاعب \"مصلح\" بدور (العاديين)</b>"
+    "<small style=\"color:#27ae60;\">٠٥:٠٣ ص</small><br><b style=\"color:#27ae60;\">🟢 [نظام] انضم اللاعب \"مصلح\" بدور (العاديين)</b>",
+    "<small style=\"color:#27ae60;\">٠٥:٠٩ ص</small><br><b style=\"color:#27ae60;\">🟢 [نظام] انضم اللاعب \"H\" بدور (الطبيب)</b>"
   ],
   "active_players": [
     "عقبه",
     "Hatem",
-    "مصلح"
+    "مصلح",
+    "H"
   ],
   "notifications": {
     "Hatem": []
