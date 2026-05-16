@@ -15,7 +15,8 @@
     "<small style=\"color:#aaa;\">٠٥:٠٣ ص</small><br><b>[العاديين] Hatem</b>: Hi",
     "<small style=\"color:#27ae60;\">٠٥:٠٣ ص</small><br><b style=\"color:#27ae60;\">🟢 [نظام] انضم اللاعب \"مصلح\" بدور (العاديين)</b>",
     "<small style=\"color:#27ae60;\">٠٥:٠٩ ص</small><br><b style=\"color:#27ae60;\">🟢 [نظام] انضم اللاعب \"H\" بدور (الطبيب)</b>",
-    "<small style=\"color:#27ae60;\">٠٥:١٣ ص</small><br><b style=\"color:#27ae60;\">🟢 [نظام] انضم اللاعب \"H\" بدور (العاديين)</b>"
+    "<small style=\"color:#27ae60;\">٠٥:١٣ ص</small><br><b style=\"color:#27ae60;\">🟢 [نظام] انضم اللاعب \"H\" بدور (العاديين)</b>",
+    "<b style=\"color:var(--accent);\">[نظام] ٠٦:٠٥ ص - تم بدء اللعبة وتوزيع الأدوار</b>"
   ],
   "active_players": [
     "عقبه",
@@ -31,5 +32,18 @@
     "ش",
     "عقبه",
     "هيثم"
-  ]
+  ],
+  "player_roles": {
+    "ش": "المافيا (الزعيم)",
+    "حاتم": "الطبيب",
+    "عقبه": "المحقق",
+    "هيثم": "المافيا (المخادع)"
+  },
+  "player_teams": {
+    "ش": "mafia",
+    "حاتم": "village",
+    "عقبه": "village",
+    "هيثم": "mafia"
+  },
+  "game_started": true
 }
