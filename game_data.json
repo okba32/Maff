@@ -3,7 +3,9 @@
     "[العاديين] Hatem: Hi",
     "[العراب (الزعيم)] عقبه: Hi"
   ],
-  "narrator_history": [],
+  "narrator_history": [
+    "<small style=\"color:#aaa;\">٠٤:٥٤ ص</small><br><b>[العاديين] Hatem</b>: Hi"
+  ],
   "active_players": [
     "عقبه"
   ],
