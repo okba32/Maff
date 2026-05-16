@@ -47,5 +47,8 @@
     "عقبه": "village",
     "هيثم": "mafia"
   },
-  "game_started": true
+  "game_started": true,
+  "global_chat": [
+    "<b>ش:</b> Hi"
+  ]
 }
