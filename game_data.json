@@ -16,5 +16,9 @@
     "عقبه",
     "Hatem"
   ],
-  "notifications": {}
+  "notifications": {
+    "Hatem": [
+      "Hi"
+    ]
+  }
 }
