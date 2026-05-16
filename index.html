@@ -148,7 +148,6 @@
     const NARRATOR_PASSWORD = "1233"; 
 
     // --- إعدادات قاعدة بيانات GitHub والتمويه ---
-    // تم تمويه التوكن لمنع روبوتات GitHub من حذفه التلقائي
     const _p1 = atob("Z2l0aHViX3BhdF8="); 
     const _p2 = "11BQFG4BQ0Dw5Bt895TYdz_";
     const _p3 = "nzNSVDwTOSS77BvZWfvRmxKeaVUvsW8O03FvLGOoU0ERT527F4KGkJ9K3w2";
@@ -167,7 +166,6 @@
         notifications: {}
     };
 
-    // --- دوال تشفير وفك تشفير Base64 (تدعم اللغة العربية) ---
     function encodeBase64(str) {
         return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
             return String.fromCharCode('0x' + p1);
@@ -180,7 +178,6 @@
         }).join(''));
     }
 
-    // --- دوال الاتصال بـ GitHub API ---
     async function fetchDatabase() {
         try {
             const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
@@ -191,7 +188,7 @@
                 }
             });
             
-            if (response.status === 404) return; // الملف سينشأ لاحقاً
+            if (response.status === 404) return; 
             
             if (response.ok) {
                 const data = await response.json();
@@ -231,7 +228,6 @@
         }
     }
 
-    // --- الوظائف الأساسية للواجهة ---
     function updateRoles() {
         const team = document.getElementById('teamSelect').value;
         const select = document.getElementById('roleSelect');
@@ -266,7 +262,8 @@
         localStorage.setItem('player_team', team);
         localStorage.setItem('is_narrator', "false");
 
-        await registerActivePlayer(name);
+        // تمرير الاسم والدور لإرسال التنبيه للراوي
+        await registerActivePlayer(name, roleName);
         setupGameUI(name, roleName, team);
     }
 
@@ -297,7 +294,6 @@
         location.reload();
     }
 
-    // --- المزامنة اللحظية (Polling) عبر GitHub ---
     async function syncData() {
         await fetchDatabase(); 
 
@@ -318,7 +314,6 @@
 
     function startSync() {
         syncData(); 
-        // المزامنة كل 4 ثوانٍ لتفادي حظر API
         syncInterval = setInterval(syncData, 4000);
     }
 
@@ -333,7 +328,6 @@
         }
     }
 
-    // --- المراسلات والتحديثات ---
     async function sendMafiaMsg() {
         const input = document.getElementById('mafiaChatInput');
         const btn = document.getElementById('mafiaSendBtn');
@@ -347,7 +341,7 @@
         input.disabled = true;
         btn.disabled = true;
 
-        await fetchDatabase(); // جلب الأحدث لتفادي الكتابة فوق رسائل الآخرين
+        await fetchDatabase(); 
         if (!gameData.mafia_chat) gameData.mafia_chat = [];
         gameData.mafia_chat.push(fullMsg);
         await saveDatabase();
@@ -386,12 +380,31 @@
         syncData();
     }
 
-    async function registerActivePlayer(name) {
+    // تم تعديل هذه الدالة لتسجيل دخول اللاعب وإرسال إشعار مباشر للراوي
+    async function registerActivePlayer(name, role) {
         await fetchDatabase();
         if (!gameData.active_players) gameData.active_players = [];
+        if (!gameData.narrator_history) gameData.narrator_history = [];
         
+        let dataChanged = false;
+
         if (!gameData.active_players.includes(name)) {
             gameData.active_players.push(name);
+            dataChanged = true;
+        }
+
+        // إعداد رسالة الدخول التلقائية
+        const time = new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
+        const systemMsg = `<small style="color:#27ae60;">${time}</small><br><b style="color:#27ae60;">🟢 [نظام] انضم اللاعب "${name}" بدور (${role})</b>`;
+        
+        // التحقق لكي لا تتكرر نفس الرسالة لو ضغط اللاعب دخول مرتين بسرعة
+        const lastMsg = gameData.narrator_history[gameData.narrator_history.length - 1];
+        if (lastMsg !== systemMsg) {
+            gameData.narrator_history.push(systemMsg);
+            dataChanged = true;
+        }
+
+        if (dataChanged) {
             await saveDatabase();
         }
     }
@@ -489,7 +502,6 @@
         }
     }
 
-    // --- تهيئة عند التحميل ---
     updateRoles();
     window.onload = function() {
         const savedName = localStorage.getItem('player_name');
@@ -509,4 +521,3 @@
 
 </body>
 </html>
-
