@@ -35,7 +35,7 @@
         #gameArea, #narratorArea, #waitingArea, #mafiaChatSection, #actionSection { display: none; }
         
         .chat-box { background: #1a2a34; height: 180px; overflow-y: auto; padding: 10px; border-radius: 8px; border: 1px solid #34495e; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .msg { background: #34495e; padding: 8px 12px; border-radius: 8px; font-size: 13px; border-right: 4px solid var(--accent); animation: fadeIn 0.3s ease; }
+        .msg { background: #34495e; padding: 8px 12px; border-radius: 8px; font-size: 13px; border-right: 4px solid var(--accent); animation: fadeIn 0.3s ease; line-height: 1.4; }
         .msg.mafia-msg { border-right-color: var(--mafia-color); background: #2c1e1e; }
         .msg.global-msg { border-right-color: var(--global-color); background: #1b384d; }
         .msg.system-msg { border-right-color: #bdc3c7; background: #2c3e50; font-weight: bold; }
@@ -52,9 +52,9 @@
         .waiting-loader { border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        .players-list { background: #1a2a34; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #bdc3c7; }
-        .player-chip { display: inline-block; padding: 4px 8px; background: #34495e; border-radius: 4px; font-size: 12px; margin: 2px; }
-        .player-chip.dead { background: #7f1d1d; text-decoration: line-through; color: #fca5a5; }
+        .players-list { background: #1a2a34; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #bdc3c7; text-align: right; line-height: 1.8; }
+        .player-chip { display: inline-block; padding: 6px 10px; background: #34495e; border-radius: 6px; font-size: 13px; margin: 3px; border: 1px solid #4a6278; }
+        .player-chip.dead { background: #4a1c1c; border-color: #7f1d1d; text-decoration: line-through; color: #fca5a5; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -71,25 +71,33 @@
     <div class="waiting-loader"></div>
     <p>في انتظار قيام الراوي بقبول وبدء اللعبة وتوزيع الأدوار...</p>
     <div id="waitingPlayersCount" style="margin-top:15px; color:var(--accent); font-weight: bold;"></div>
+    
+    <button id="cancelWaitingBtn" onclick="leaveWaitingRoom()" class="back-btn" style="margin-top: 25px;">رجوع / إلغاء الدخول</button>
 </div>
 
 <div class="container" id="gameArea">
-    <div id="gamePhaseIndicator" style="background:#1a2a34; padding:8px; border-radius:8px; text-align:center; font-weight:bold; margin-bottom:10px;"></div>
-    <h3 id="statusLabel" style="border-bottom: 1px solid #34495e; padding-bottom: 10px;"></h3>
+    <div id="gamePhaseIndicator" style="background:#1a2a34; padding:8px; border-radius:8px; text-align:center; font-weight:bold; margin-bottom:10px; border-bottom: 2px solid var(--accent);"></div>
     
+    <h3 id="statusLabel" style="border-bottom: 1px solid #34495e; padding-bottom: 10px; margin-top: 15px;"></h3>
+    
+    <div style="background:#1a2a34; padding:12px; border-radius:8px; margin-bottom:15px; border: 1px solid #34495e;">
+        <h4 style="color: var(--accent); margin-top: 0; margin-bottom: 10px; text-align: right; font-size: 15px;">👥 سكان القرية (حالة السيناريو):</h4>
+        <div id="villageStatusDisplay" style="text-align: right;"></div>
+    </div>
+
     <div id="actionSection" style="background: #1a2a34; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--accent);">
-        <h4 id="actionTitle" style="margin-bottom: 5px; text-align: right;">القرارات المتوفرة:</h4>
+        <h4 id="actionTitle" style="margin-bottom: 8px; text-align: right;">القرارات المتوفرة:</h4>
         <select id="actionTargetSelect">
             <option value="">اختر اللاعب المستهدف...</option>
         </select>
-        <button id="btnSubmitAction" onclick="submitPlayerAction()" style="background-color:var(--village-color);">تأكيد قراري وإرساله</button>
+        <button id="btnSubmitAction" onclick="submitPlayerAction()" style="background-color:var(--village-color); margin-top: 8px;">تأكيد قراري وإرساله</button>
     </div>
 
     <div>
         <h4 style="color: var(--global-color); margin-bottom: 5px; text-align: right;">الشات العام للقرية 🌍</h4>
         <div class="chat-box" id="globalChatBox"></div>
         <div class="flex-row" id="globalChatControls">
-            <input type="text" id="globalChatInput" placeholder="تحدث مع جميع اللاعبين بظهور اسمك فقط...">
+            <input type="text" id="globalChatInput" placeholder="تحدث مع جميع اللاعبين (اسمك فقط سيظهر)...">
             <button id="globalSendBtn" style="background-color: var(--global-color); width: 80px;" onclick="sendGlobalMsg()">إرسال</button>
         </div>
         <hr style="border-color: #34495e; margin: 15px 0;">
@@ -106,9 +114,10 @@
     </div>
 
     <h4>أوامرك وقراراتك الخاصة للراوي 📜</h4>
-    <textarea id="narratorInput" rows="2" placeholder="اكتب أي ملاحظة إضافية للراوي هنا..."></textarea>
+    <textarea id="narratorInput" rows="2" placeholder="اكتب أي ملاحظة إضافية سرية للراوي هنا..."></textarea>
     <button id="narratorSendBtn" onclick="sendToNarrator()">إرسال ملاحظة</button>
-    <button onclick="logout()" class="back-btn" style="margin-top: 15px;">تسجيل الخروج</button>
+    
+    <button onclick="logout()" class="back-btn" style="margin-top: 25px;">تسجيل الخروج النهائي</button>
 </div>
 
 <div class="container" id="narratorArea">
@@ -128,7 +137,7 @@
     </div>
 
     <h4>كشف الهويات وقائمة جميع اللاعبين:</h4>
-    <div id="narratorPlayersStatusList" style="background:#1a2a34; padding:10px; border-radius:8px; margin-bottom:15px;"></div>
+    <div id="narratorPlayersStatusList" style="background:#1a2a34; padding:10px; border-radius:8px; margin-bottom:15px; text-align: right; line-height: 1.8;"></div>
 
     <h4>الشات العام 🌍</h4>
     <div class="chat-box" id="narratorGlobalChat" style="height: 120px;"></div>
@@ -152,14 +161,14 @@
     <button id="pmSendBtn" onclick="sendPMToPlayer()" style="background: var(--village-color);">إرسال الإشعار السري</button>
 
     <button onclick="clearAllData()" class="danger-btn" style="margin-top: 25px;">مسح كل بيانات اللعبة (إعادة بدء جديدة)</button>
-    <button onclick="logout()" class="back-btn">رجوع للقائمة</button>
+    <button onclick="logout()" class="back-btn">رجوع للقائمة الرئيسية</button>
 </div>
 
 <div id="notificationBadge" onclick="openNotification()">📬</div>
 <div class="modal-overlay" id="msgModal">
     <div class="modal-content">
         <h3 style="color: var(--accent);">رسالة سرية من المحرك/الراوي</h3>
-        <p id="modalMessageText">نص الإشعار يظهر هنا</p>
+        <p id="modalMessageText" style="line-height: 1.5; font-size: 15px;"></p>
         <button onclick="closeNotification()" id="closeMsgBtn" style="background-color: var(--village-color);">علمت بذلك</button>
     </div>
 </div>
@@ -203,8 +212,8 @@
 
     let syncInterval; 
     let currentSha = null;
-    let lastRenderedChatCounts = { global: 0, mafia: 0, narrator: 0 }; // لمنع تحديث الشات إذا لم تكن هناك رسائل جديدة
-    let lastRenderedPlayersList = ""; // لمنع تحديث القوائم وإلغاء التحديد
+    let lastRenderedChatCounts = { global: 0, mafia: 0, narrator: 0 }; 
+    let lastRenderedPlayersList = ""; 
 
     let gameData = {
         waiting_players: [],
@@ -243,7 +252,6 @@
         } catch (error) { console.error("خطأ جلب البيانات:", error); }
     }
 
-    // تم تعديل هذه الدالة لجلب آخر تحديث قبل الحفظ مباشرة لتجنب تداخل البيانات
     async function safeUpdateDatabase(updateLogic) {
         await fetchDatabase(); 
         updateLogic();
@@ -311,9 +319,28 @@
         document.getElementById('gameArea').style.display = 'block';
     }
 
+    // --- دالة الخروج من غرفة الانتظار (جديد) ---
+    async function leaveWaitingRoom() {
+        const name = localStorage.getItem('player_name');
+        const btn = document.getElementById('cancelWaitingBtn');
+        btn.disabled = true;
+        btn.innerText = "جاري الخروج...";
+
+        await safeUpdateDatabase(() => {
+            if (gameData.waiting_players) {
+                // إزالة اسم اللاعب من غرفة الانتظار
+                gameData.waiting_players = gameData.waiting_players.filter(p => p !== name);
+            }
+        });
+
+        clearInterval(syncInterval);
+        localStorage.clear();
+        location.reload();
+    }
+
     function renderChatSmart(containerId, messages, extraClass, countKey) {
         if (!messages) messages = [];
-        if (lastRenderedChatCounts[countKey] === messages.length) return; // لا تقم بالتحديث إذا لم تكن هناك رسالة جديدة
+        if (lastRenderedChatCounts[countKey] === messages.length) return; 
         
         const container = document.getElementById(containerId);
         if(!container) return;
@@ -332,7 +359,7 @@
         const currentOptionsString = optionsArray.join(',');
         const checkKey = selectId + currentOptionsString;
         
-        if (select.dataset.lastOptions === checkKey) return; // لا تقم بتحديث القائمة إذا كانت الخيارات هي نفسها (يمنع فقدان التحديد)
+        if (select.dataset.lastOptions === checkKey) return; 
 
         const currentSelection = select.value;
         let opts = `<option value="">${defaultText}</option>`;
@@ -367,16 +394,17 @@
                 
                 const doneActions = Object.keys(gameData.submitted_actions || {}).length;
                 const totalAlive = (gameData.alive_players || []).length;
-                document.getElementById('pendingActionsStatus').innerText = `عدد قرارات اللاعبين المستلمة الحالية: (${doneActions} من أصل ${totalAlive} أحياء)`;
+                document.getElementById('pendingActionsStatus').innerText = `القرارات المستلمة: (${doneActions} من ${totalAlive} أحياء)`;
             } else {
                 document.getElementById('narratorControlPanel').style.display = 'block';
                 document.getElementById('activeGameControls').style.display = 'none';
             }
             
+            // تحديث قائمة الراوي الشاملة
             const statusHTML = (gameData.waiting_players || []).map(p => {
                 const alive = (gameData.alive_players || []).includes(p);
                 const role = (gameData.player_roles && gameData.player_roles[p]) ? gameData.player_roles[p] : "غير محدد";
-                return `<span class="player-chip ${alive?'':'dead'}">${p} [${role}] - ${alive?'❤️ حي':'💀 ميت'}</span>`;
+                return `<span class="player-chip ${alive?'':'dead'}">${p} [${role}] ${alive?'❤️':'💀'}</span>`;
             }).join('');
             
             if (document.getElementById('narratorPlayersStatusList').innerHTML !== statusHTML) {
@@ -395,11 +423,31 @@
 
                 document.getElementById('gamePhaseIndicator').innerText = phaseText;
 
+                // تحديث لوحة حالة القرية لجميع اللاعبين (السيناريو)
+                const villageStatusHTML = (gameData.waiting_players || []).map(p => {
+                    const isAlive = (gameData.alive_players || []).includes(p);
+                    const isDead = (gameData.dead_players || []).includes(p);
+                    
+                    if (isDead) {
+                        // كشف الدور عند الموت
+                        const pRole = (gameData.player_roles && gameData.player_roles[p]) ? gameData.player_roles[p] : "مجهول";
+                        return `<span class="player-chip dead" title="تم قتله">${p} [${pRole}] 💀</span>`;
+                    } else if (isAlive) {
+                        return `<span class="player-chip" title="ما زال حياً">${p} ❤️</span>`;
+                    }
+                    return '';
+                }).join('');
+                
+                if (document.getElementById('villageStatusDisplay').innerHTML !== villageStatusHTML) {
+                    document.getElementById('villageStatusDisplay').innerHTML = villageStatusHTML;
+                }
+
+                // تحديث بطاقة اللاعب الشخصية
                 if (alive) {
                     document.getElementById('statusLabel').innerHTML = `👤 اللاعب: <b>${playerName}</b> <br> 🎭 دورك السري: <b style="color:var(--accent); font-size: 17px;">${role}</b>`;
                     document.getElementById('globalChatControls').style.display = 'flex';
                 } else {
-                    document.getElementById('statusLabel').innerHTML = `👤 اللاعب: <b>${playerName}</b> <br> <b style="color:var(--mafia-color);">🎭 الحالة: لقد لقيت حتفك (💀 ميت - وضع المشاهدة)</b>`;
+                    document.getElementById('statusLabel').innerHTML = `👤 اللاعب: <b>${playerName}</b> <br> <b style="color:var(--mafia-color);">🎭 الحالة: لقد لقيت حتفك (💀 ميت - وضع المشاهدة)</b><br><span style="font-size:13px; color:#bdc3c7;">بإمكانك متابعة السيناريو والشات العام، ولكن لا يمكنك التصويت أو إرسال الرسائل.</span>`;
                     document.getElementById('globalChatControls').style.display = 'none';
                 }
 
@@ -559,9 +607,9 @@
                 if (lynchedPlayer) {
                     gameData.alive_players = gameData.alive_players.filter(p => p !== lynchedPlayer);
                     if (!gameData.dead_players.includes(lynchedPlayer)) gameData.dead_players.push(lynchedPlayer);
-                    gameData.global_chat.push(`⚖️ بناءً على تصويت الأغلبية العظمى للقرية، تم تنفيذ حكم الإعدام بحق: [${lynchedPlayer}] (ودوره كان: ${roles[lynchedPlayer]})`);
+                    gameData.global_chat.push(`⚖️ بناءً على تصويت الأغلبية للقرية، تم تنفيذ حكم الإعدام بحق: [${lynchedPlayer}] (ودوره كان: ${roles[lynchedPlayer]})`);
                 } else {
-                    gameData.global_chat.push("⚖️ انتهى النهار والنقاش دون إجماع أو تعادل الأصوات.. لم يتم إعدام أحد اليوم!");
+                    gameData.global_chat.push("⚖️ انتهى النهار والنقاش دون إجماع للشنق.. لم يتم إعدام أحد اليوم!");
                 }
 
                 gameData.phase = "night";
@@ -610,10 +658,10 @@
             if (!gameData.narrator_history) gameData.narrator_history = [];
             const time = new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
             gameData.narrator_history.push(`🟢 [نظام] ${time} - تم بدء اللعبة وتوزيع الأدوار والمجموعات بنجاح.`);
-            gameData.global_chat.push("🌙 حل الليل الأول على القرية! يرجى من أصحاب الصلاحيات إرسال قراراتهم السرية للمحرك.");
+            gameData.global_chat.push("🌙 حل الليل الأول على القرية! يرجى من أصحاب الصلاحيات إرسال قراراتهم السرية.");
         });
 
-        alert("تم فرز وتوزيع الأدوار عشوائياً بنجاح وفقاً لقاعدة عدد المشتركين الحالية!");
+        alert("تم فرز وتوزيع الأدوار عشوائياً وبدأت اللعبة!");
         syncData();
     }
 
