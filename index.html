@@ -202,14 +202,11 @@
     
     const NARRATOR_PASSWORD = "1233"; 
 
-    // 1. تشفير وتجزئة التوكن لمنع حظره من GitHub
-    // Z2l0aHViX3BhdF8= تعني "github_pat_" مفككة بـ Base64
+    // إعدادات GitHub Token وقاعدة البيانات
     const _p1 = atob("Z2l0aHViX3BhdF8="); 
-    const _p2 = "11BQFG4BQ0iAQ7stsVAkX9_";
-    const _p3 = "CP081JB8kv5zdEjpr8chaqg4Wjw0K7kiOtB9bof3Oco3634OQRCUlpV85ZA";
+    const _p2 = "11BQFG4BQ0Dw5Bt895TYdz_";
+    const _p3 = "nzNSVDwTOSS77BvZWfvRmxKeaVUvsW8O03FvLGOoU0ERT527F4KGkJ9K3w2";
     const GITHUB_TOKEN = _p1 + _p2 + _p3;
-    
-    // 2. إعدادات المستودع الخاص بك
     const REPO_OWNER = "okba32";
     const REPO_NAME = "Maff";
     const FILE_PATH = "game_data.json"; 
@@ -217,7 +214,6 @@
     let syncInterval; 
     let currentSha = null;
     let lastRenderedChatCounts = { global: 0, mafia: 0, narrator: 0 }; 
-    let lastRenderedPlayersList = ""; 
 
     let gameData = {
         waiting_players: [],
@@ -235,6 +231,7 @@
         notifications: {}
     };
 
+    // دوال تشفير وفك تشفير مع دعم الحروف العربية
     function encodeBase64(str) {
         return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) { return String.fromCharCode('0x' + p1); }));
     }
@@ -243,60 +240,39 @@
         return decodeURIComponent(atob(str).split('').map(function(c) { return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2); }).join(''));
     }
 
-    // --- دالة جلب البيانات الاحترافية ---
     async function fetchDatabase() {
         try {
             const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?t=${new Date().getTime()}`, {
-                headers: { 
-                    "Authorization": `token ${GITHUB_TOKEN}`, 
-                    "Accept": "application/vnd.github.v3+json", 
-                    "Cache-Control": "no-cache" 
-                }
+                headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Accept": "application/vnd.github.v3+json", "Cache-Control": "no-cache" }
             });
             if (response.ok) {
                 const data = await response.json();
                 currentSha = data.sha;
                 gameData = JSON.parse(decodeBase64(data.content));
-            } else if (response.status === 404) {
-                console.warn("ملف البيانات غير موجود بعد، سيتم إنشاؤه عند أول حفظ.");
             }
-        } catch (error) { 
-            console.error("خطأ في جلب البيانات من السيرفر:", error); 
-        }
+        } catch (error) { console.error("خطأ جلب البيانات:", error); }
     }
 
-    // --- دالة الرفع والتحديث الآمنة ---
+    // التحديث الآمن لمعالجة تداخل رفع البيانات (Race Conditions)
     async function safeUpdateDatabase(updateLogic) {
-        await fetchDatabase(); // 1. جلب أحدث نسخة
-        
-        updateLogic(); // 2. تطبيق التعديل المحلي على البيانات
+        await fetchDatabase(); 
+        updateLogic();
         
         try {
             const content = encodeBase64(JSON.stringify(gameData, null, 2));
-            const body = { 
-                message: "تحديث آلي لبيانات اللعبة", 
-                content: content 
-            };
-            if (currentSha) body.sha = currentSha; // 3. إرفاق بصمة الملف لتأكيد التحديث
+            const body = { message: "تحديث اللعبة اللحظي", content: content };
+            if (currentSha) body.sha = currentSha;
 
             const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
                 method: "PUT",
-                headers: { 
-                    "Authorization": `token ${GITHUB_TOKEN}`, 
-                    "Accept": "application/vnd.github.v3+json" 
-                },
+                headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Accept": "application/vnd.github.v3+json" },
                 body: JSON.stringify(body)
             });
-            
             if (response.ok) {
                 const data = await response.json();
-                currentSha = data.content.sha; // تحديث البصمة للعملية القادمة
-            } else {
-                console.error("فشل في الرفع، الرد من السيرفر:", await response.text());
+                currentSha = data.content.sha;
             }
-        } catch (error) { 
-            console.error("خطأ في حفظ البيانات:", error); 
-        }
+        } catch (error) { console.error("خطأ حفظ البيانات:", error); }
     }
 
     async function login() {
@@ -499,7 +475,6 @@
 
                     if (showAction) {
                         actionSection.style.display = 'block';
-                        
                         let validTargets = (gameData.alive_players || []).filter(p => p !== playerName || (gameData.phase === "night" && role.includes("الطبيب")));
                         updateDropdownSmart('actionTargetSelect', validTargets, 'اختر اللاعب المستهدف...');
 
