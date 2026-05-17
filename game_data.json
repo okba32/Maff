@@ -24,7 +24,8 @@
   "dead_players": {},
   "global_chat": [
     "<b style=\"color:var(--accent);\">[نظام] بدأت اللعبة! لديكم 3 دقائق للتعارف قبل حلول الليل.</b>",
-    "<b style=\"color:var(--accent);\">عقبه:</b> سلام"
+    "<b style=\"color:var(--accent);\">عقبه:</b> سلام",
+    "<b style=\"color:var(--accent);\">قاسم:</b> هلا"
   ],
   "mafia_chat": [],
   "votes": {},
