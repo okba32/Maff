@@ -17,5 +17,8 @@
   "game_started": true,
   "narrator_history": [
     "<b style=\"color:var(--accent);\">[نظام] ١٠:٥٨ م - تم بدء اللعبة وتوزيع الأدوار</b>"
+  ],
+  "global_chat": [
+    "<b>حاتم:</b> Hi"
   ]
 }
