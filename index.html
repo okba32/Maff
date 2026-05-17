@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mafia Game Manager - Pro Auto</title>
+    <title>Mafia Game Manager - Legendary Auto</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,7 +12,8 @@
             --accent: #e67e22; --accent-hover: #d35400;
             --text: #ecf0f1; --mafia-color: #e74c3c;
             --village-color: #2ecc71; --global-color: #3498db;
-            --special-color: #9b59b6; --transition-speed: 1s;
+            --special-color: #9b59b6; --ghost-color: #95a5a6;
+            --transition-speed: 1s;
         }
         body { 
             background-color: var(--bg-day); 
@@ -75,6 +76,7 @@
         .danger-btn { background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3); }
         .success-btn { background: linear-gradient(135deg, #2ecc71, #27ae60); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3); }
         .special-btn { background: linear-gradient(135deg, #9b59b6, #8e44ad); box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3); }
+        .ghost-btn { background: linear-gradient(135deg, #95a5a6, #7f8c8d); box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3); }
 
         #gameArea, #narratorArea, #waitingArea, #winnerArea { display: none; }
         
@@ -82,7 +84,7 @@
         
         .top-players-panel { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; background: rgba(0,0,0,0.25); padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
         .player-badge { background: linear-gradient(145deg, #34495e, #2c3e50); padding: 10px 18px; border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center; min-width: 85px; border-bottom: 4px solid var(--accent); animation: fadeIn 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .player-badge.dead { background: rgba(192, 57, 43, 0.15); border-bottom-color: var(--mafia-color); color: #bdc3c7; box-shadow: none; opacity: 0.8; }
+        .player-badge.dead { background: rgba(0,0,0,0.4); border-bottom-color: var(--ghost-color); color: var(--ghost-color); box-shadow: none; opacity: 0.7; }
         .player-badge.dead span.name { text-decoration: line-through; }
         .role-reveal { display: block; color: #f1c40f; font-size: 12px; margin-top: 6px; font-weight: 800; animation: fadeIn 1s; }
         
@@ -93,6 +95,7 @@
         .msg { background: #34495e; padding: 10px 15px; border-radius: 12px; border-bottom-right-radius: 0; font-size: 14px; border-right: 4px solid var(--accent); animation: fadeIn 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .msg.mafia-msg { border-right-color: var(--mafia-color); background: rgba(231, 76, 60, 0.15); }
         .msg.global-msg { border-right-color: var(--global-color); background: rgba(52, 152, 219, 0.15); }
+        .msg.ghost-msg { border-right-color: var(--ghost-color); background: rgba(149, 165, 166, 0.1); color: #bdc3c7; font-style: italic; border-bottom-right-radius: 12px; border-bottom-left-radius: 0; border-right: none; border-left: 4px solid var(--ghost-color); }
         
         .phase-indicator { text-align: center; font-size: 22px; margin-bottom: 20px; padding: 15px; border-radius: 12px; font-weight: 800; transition: all 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .phase-day { background: linear-gradient(135deg, rgba(241, 196, 15, 0.2), rgba(243, 156, 18, 0.2)); color: #f39c12; border: 2px solid rgba(241, 196, 15, 0.5); }
@@ -115,10 +118,14 @@
         .settings-grid label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; transition: all 0.2s; border: 1px solid transparent; }
         .settings-grid label:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
         .settings-grid input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; cursor: pointer; }
-        .role-desc { font-size: 11px; color: #bdc3c7; display: block; margin-top: 3px; font-weight: 400; }
     </style>
 </head>
 <body>
+
+<audio id="sfx-day" src="https://www.myinstants.com/media/sounds/rooster.mp3" preload="auto"></audio>
+<audio id="sfx-night" src="https://www.myinstants.com/media/sounds/wolf-howl.mp3" preload="auto"></audio>
+<audio id="sfx-death" src="https://www.myinstants.com/media/sounds/gunshot.mp3" preload="auto"></audio>
+<audio id="sfx-win" src="https://www.myinstants.com/media/sounds/victory-ff.mp3" preload="auto"></audio>
 
 <div class="container" id="loginArea">
     <h2>انضم إلى قرية المافيا 🕵️‍♂️</h2>
@@ -165,7 +172,6 @@
 
     <div id="specialRoleSection" class="vote-box special-box">
         <h4 id="specialTitle" style="margin-top:0; color:var(--special-color); font-size: 18px;">قدرتك الخاصة</h4>
-        <p id="specialDesc" style="font-size: 14px; margin-bottom: 15px; color:#bdc3c7;"></p>
         <div class="flex-row">
             <select id="specialSelect"><option value="">اختر لاعباً...</option></select>
             <button id="submitSpecialBtn" onclick="submitSpecialAction()" class="special-btn" style="width: 120px;">تنفيذ</button>
@@ -178,6 +184,15 @@
         <div class="flex-row">
             <input type="text" id="globalChatInput" placeholder="تحدث مع الجميع هنا...">
             <button id="globalSendBtn" style="background: var(--global-color); width: 100px; margin:0;" onclick="sendGlobalMsg()">إرسال</button>
+        </div>
+    </div>
+
+    <div id="ghostChatSection" style="margin-top: 25px; display:none;">
+        <h4 style="color: var(--ghost-color); margin-bottom: 10px; font-size: 16px;">عالم الأرواح (شات الأموات) 👻</h4>
+        <div class="chat-box" id="ghostChatBox" style="border-color: rgba(149, 165, 166, 0.3); background: rgba(0,0,0,0.6);"></div>
+        <div class="flex-row">
+            <input type="text" id="ghostChatInput" placeholder="تحدث مع الأرواح الأخرى بصمت...">
+            <button class="ghost-btn" id="ghostSendBtn" style="width: 100px; margin:0;" onclick="sendGhostMsg()">إرسال</button>
         </div>
     </div>
 
@@ -198,29 +213,33 @@
     <p style="color: #e74c3c; font-size:13px; text-align:center; font-weight: bold; background: rgba(231, 76, 60, 0.1); padding: 10px; border-radius: 8px;">⚠️ لا تغلق هذه الصفحة أبداً أثناء اللعب، المتصفح هنا هو من يحسب الوقت ويقوم بالتصفيات التلقائية!</p>
     
     <div id="narratorSettingsPanel" class="vote-box" style="border-color: var(--village-color);">
-        <h4 style="margin-top: 0; color: var(--village-color);">⚙️ إعدادات الأدوار الخاصة (تتوزع عشوائياً)</h4>
+        <h4 style="margin-top: 0; color: var(--village-color);">⚙️ إعدادات الأدوار الخاصة</h4>
         <div class="settings-grid">
-            <label><div><input type="checkbox" id="setDoc" checked> <b>الطبيب 💉</b><span class="role-desc">حماية شخص من القتل</span></div></label>
-            <label><div><input type="checkbox" id="setDet" checked> <b>المحقق 🔍</b><span class="role-desc">كشف هوية المافيا</span></div></label>
-            <label><div><input type="checkbox" id="setGuard"> <b>الحارس 🛡️</b><span class="role-desc">يتلقى الرصاصة بدلاً من الهدف</span></div></label>
-            <label><div><input type="checkbox" id="setHooker"> <b>المعطل 🚫</b><span class="role-desc">تجميد قدرة شخص بالليل</span></div></label>
-            <label><div><input type="checkbox" id="setSniper"> <b>القناص 🎯</b><span class="role-desc">قتل شخص واحد في اللعبة</span></div></label>
-            <label><div><input type="checkbox" id="setWitch"> <b>الساحرة 🧙‍♀️</b><span class="role-desc">ترياق للحياة وسم للقتل</span></div></label>
-            <label><div><input type="checkbox" id="setMayor"> <b>العمدة 🎩</b><span class="role-desc">صوته في الإعدام يحسب بصوتين</span></div></label>
-            <label><div><input type="checkbox" id="setGodfather"> <b>الزعيم 🕴️</b><span class="role-desc">زعيم مافيا، لا يكشفه المحقق</span></div></label>
-            <label><div><input type="checkbox" id="setSpy"> <b>الجاسوس 🕵️</b><span class="role-desc">يعرف المافيا دون أن يعرفوه</span></div></label>
+            <label><div><input type="checkbox" id="setDoc" checked> <b>الطبيب</b></div></label>
+            <label><div><input type="checkbox" id="setDet" checked> <b>المحقق</b></div></label>
+            <label><div><input type="checkbox" id="setGuard"> <b>الحارس</b></div></label>
+            <label><div><input type="checkbox" id="setHooker"> <b>المعطل</b></div></label>
+            <label><div><input type="checkbox" id="setSniper"> <b>القناص</b></div></label>
+            <label><div><input type="checkbox" id="setWitch"> <b>الساحرة</b></div></label>
+            <label><div><input type="checkbox" id="setMayor"> <b>العمدة</b></div></label>
+            <label><div><input type="checkbox" id="setGodfather"> <b>الزعيم</b></div></label>
+            <label><div><input type="checkbox" id="setSpy"> <b>الجاسوس</b></div></label>
         </div>
         <button onclick="saveSettings()" class="success-btn">حفظ وتطبيق الإعدادات</button>
     </div>
 
-    <div style="background: rgba(0,0,0,0.25); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);">
-        <h4 style="margin-top: 0; color: #ecf0f1;">اللاعبون المتصلون:</h4>
-        <div class="players-list" id="narratorWaitingList" style="margin-bottom: 15px; font-size: 15px; line-height: 1.8;">لا يوجد لاعبين...</div>
-        <p style="font-size:14px; color:var(--accent); font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">حالة اللعبة الحالية: <span id="narratorGameState">في الانتظار</span></p>
+    <div style="background: rgba(0,0,0,0.25); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+        <h4 style="margin-top: 0; color: #ecf0f1;">اللاعبون:</h4>
+        <div id="narratorWaitingList" style="margin-bottom: 15px; font-size: 15px; line-height: 1.8;">لا يوجد لاعبين...</div>
+        <p style="font-size:14px; color:var(--accent); font-weight: bold;">حالة اللعبة: <span id="narratorGameState">في الانتظار</span></p>
     </div>
 
-    <h4 style="margin-bottom: 10px;">مراقبة الشات العام 🌍</h4>
-    <div class="chat-box" id="narratorGlobalChat" style="height: 150px;"></div>
+    <h4 style="margin-bottom: 10px;">الشات العام 🌍</h4>
+    <div class="chat-box" id="narratorGlobalChat" style="height: 120px;"></div>
+    
+    <h4 style="margin-bottom: 10px; color: var(--ghost-color);">عالم الأرواح 👻</h4>
+    <div class="chat-box" id="narratorGhostChat" style="height: 120px;"></div>
+
     <button onclick="clearAllData()" class="danger-btn" style="margin-top: 25px;">مسح كل البيانات وإنهاء اللعبة فوراً 🛑</button>
     <button onclick="logout()" class="back-btn">خروج من وضع الراوي</button>
 </div>
@@ -233,13 +252,13 @@
 
     let syncInterval, localTimerInterval;
     let currentSha = null;
+    let lastKnownState = null;
+    let lastKnownDeadCount = -1;
+
     let gameData = {
-        state: 'WAITING', 
-        phase_name: 'الانتظار',
-        day_number: 1,
-        timer_end: 0,
+        state: 'WAITING', phase_name: 'الانتظار', day_number: 1, timer_end: 0, 
         waiting_players: [], player_roles: {}, player_teams: {}, dead_players: {},
-        global_chat: [], mafia_chat: [], votes: {}, night_actions: {}, 
+        global_chat: [], mafia_chat: [], ghost_chat: [], votes: {}, night_actions: {}, 
         allowed_roles: ["الطبيب", "المحقق"], winner: null
     };
 
@@ -252,6 +271,7 @@
             if (response.ok) {
                 const data = await response.json(); currentSha = data.sha;
                 gameData = Object.assign(gameData, JSON.parse(decodeBase64(data.content))); 
+                if(!gameData.ghost_chat) gameData.ghost_chat = []; // التأكد من وجود المصفوفة
             }
         } catch (error) { console.error("Error Fetching", error); }
     }
@@ -297,6 +317,36 @@
         document.getElementById('loginArea').style.display = 'none'; document.getElementById('gameArea').style.display = 'none'; document.getElementById('waitingArea').style.display = 'block';
     }
 
+    function playSound(type) {
+        try {
+            if(type === 'day') document.getElementById('sfx-day').play();
+            else if(type === 'night') document.getElementById('sfx-night').play();
+            else if(type === 'death') document.getElementById('sfx-death').play();
+            else if(type === 'win') document.getElementById('sfx-win').play();
+        } catch(e) {} // تجاهل الأخطاء إذا المتصفح منع التشغيل
+    }
+
+    function handleAudioAndEvents() {
+        if (lastKnownState === null) {
+            lastKnownState = gameData.state;
+            lastKnownDeadCount = Object.keys(gameData.dead_players || {}).length;
+            return;
+        }
+
+        let currentDeadCount = Object.keys(gameData.dead_players || {}).length;
+        if (currentDeadCount > lastKnownDeadCount) {
+            playSound('death');
+            lastKnownDeadCount = currentDeadCount;
+        }
+
+        if (gameData.state !== lastKnownState) {
+            if (gameData.state === 'NIGHT') playSound('night');
+            else if (gameData.state === 'DAY') playSound('day');
+            else if (gameData.state === 'GAME_OVER') playSound('win');
+            lastKnownState = gameData.state;
+        }
+    }
+
     async function engineTick() {
         if (localStorage.getItem('is_narrator') !== "true") return; 
         
@@ -304,9 +354,7 @@
         const playersCount = gameData.waiting_players.length;
 
         if (gameData.state === 'WAITING' && playersCount >= 4) {
-            gameData.state = 'COUNTDOWN';
-            gameData.timer_end = now + (60 * 1000); 
-            await saveDatabase();
+            gameData.state = 'COUNTDOWN'; gameData.timer_end = now + (60 * 1000); await saveDatabase();
         }
 
         if (gameData.state === 'COUNTDOWN' && now >= gameData.timer_end) {
@@ -332,11 +380,10 @@
 
         if (gameData.state === 'NIGHT' && now >= gameData.timer_end) {
             processNightActions(); 
-            
             if(!checkWinCondition()) { 
                 gameData.state = 'DAY'; gameData.day_number++; gameData.phase_name = `نهار اليوم ${gameData.day_number} ☀️`;
                 gameData.timer_end = now + (30 * 1000); 
-                gameData.global_chat.push(`<b style="color:#e74c3c;">☀️ أشرق الصباح! لديكم 30 ثانية للنقاش والتصويت (التصويت متاح للجميع).</b>`);
+                gameData.global_chat.push(`<b style="color:#e74c3c;">☀️ أشرق الصباح! لديكم 30 ثانية للنقاش والتصويت.</b>`);
             }
             await saveDatabase();
         }
@@ -347,16 +394,11 @@
         let N = players.length;
         gameData.player_roles = {}; gameData.player_teams = {}; gameData.dead_players = {};
         
-        let mCount = 1; 
+        let mCount = (N <= 6) ? 1 : Math.floor(N / 3); 
         let specialRolesToAssign = [];
 
-        if (N === 4 || N === 5) {
-            mCount = 1; 
-        } else if (N === 6) {
-            mCount = 1;
-            specialRolesToAssign = ["الطبيب"]; 
-        } else if (N > 6) {
-            mCount = Math.floor(N / 3);
+        if (N === 6) specialRolesToAssign = ["الطبيب"]; 
+        else if (N > 6) {
             let numSpecials = Math.floor((N - 6) / 2) + 1; 
             let availableSpecials = [...(gameData.allowed_roles || [])].sort(() => 0.5 - Math.random());
             specialRolesToAssign = availableSpecials.slice(0, numSpecials);
@@ -364,15 +406,12 @@
 
         for (let i = 0; i < N; i++) {
             if (i < mCount) { 
-                gameData.player_roles[players[i]] = "المافيا (عضو)"; 
-                gameData.player_teams[players[i]] = "mafia"; 
+                gameData.player_roles[players[i]] = "المافيا (عضو)"; gameData.player_teams[players[i]] = "mafia"; 
             } else if (i - mCount < specialRolesToAssign.length) {
                 let sRole = specialRolesToAssign[i - mCount];
-                gameData.player_roles[players[i]] = sRole;
-                gameData.player_teams[players[i]] = (sRole === "الزعيم") ? "mafia" : "village";
+                gameData.player_roles[players[i]] = sRole; gameData.player_teams[players[i]] = (sRole === "الزعيم") ? "mafia" : "village";
             } else {
-                gameData.player_roles[players[i]] = "مواطن صالح"; 
-                gameData.player_teams[players[i]] = "village";
+                gameData.player_roles[players[i]] = "مواطن صالح"; gameData.player_teams[players[i]] = "village";
             }
         }
     }
@@ -383,31 +422,26 @@
         
         let detTarget = gameData.night_actions['المحقق'];
         if(detTarget && gameData.player_roles) {
-            let detName = Object.keys(gameData.player_roles).find(k => gameData.player_roles[k] === 'المحقق' && !gameData.dead_players[k]);
             let isMafia = gameData.player_teams[detTarget] === 'mafia' && gameData.player_roles[detTarget] !== 'الزعيم';
-            if(detName) gameData.global_chat.push(`<small style="color:#bdc3c7;">(خاص للمحقق): نتيجة فحصك لـ ${detTarget} بأنه ${isMafia ? 'مافيا 🔪' : 'بريء 🕊️'}</small>`); 
+            gameData.global_chat.push(`<small style="color:#bdc3c7;">(خاص للمحقق): فحص ${detTarget} نتيجته: ${isMafia ? 'مافيا 🔪' : 'بريء 🕊️'}</small>`); 
         }
 
         if (mafiaTarget) {
             if (mafiaTarget === healedTarget) {
-                gameData.global_chat.push(`<b>📢 أشرق الصباح، حاولت المافيا اغتيال شخص ولكن تم إنقاذه بأعجوبة من قبل الطبيب! 💉</b>`);
+                gameData.global_chat.push(`<b>📢 أشرق الصباح، حاول أحدهم القتل ولكن الطبيب تدخل في اللحظة الأخيرة! 💉</b>`);
             } else {
                 gameData.dead_players[mafiaTarget] = gameData.player_roles[mafiaTarget];
                 gameData.global_chat.push(`<b style="color:#e74c3c; font-size:16px;">💀 وجدنا جثة [${mafiaTarget}] ممزقة! كان دوره: ${gameData.player_roles[mafiaTarget]}</b>`);
             }
-        } else {
-            gameData.global_chat.push(`<b>📢 صباح هادئ، لم يمت أحد الليلة الماضية.</b>`);
-        }
+        } else { gameData.global_chat.push(`<b>📢 صباح هادئ، لم يمت أحد الليلة الماضية.</b>`); }
     }
 
     function processDayVotes() {
         let target = getHighestVote(gameData.votes);
         if (target) {
             gameData.dead_players[target] = gameData.player_roles[target];
-            gameData.global_chat.push(`<b style="color:var(--mafia-color); font-size:16px;">⚖️ قررت القرية بأغلبية الأصوات إعدام [${target}]! كان دوره: ${gameData.player_roles[target]}</b>`);
-        } else {
-            gameData.global_chat.push(`<b>⚖️ لم يتم إعدام أحد اليوم لعدم وجود أصوات.</b>`);
-        }
+            gameData.global_chat.push(`<b style="color:var(--mafia-color); font-size:16px;">⚖️ أعدمت القرية [${target}]! كان دوره: ${gameData.player_roles[target]}</b>`);
+        } else { gameData.global_chat.push(`<b>⚖️ لم يتم إعدام أحد لعدم وجود أغلبية.</b>`); }
     }
 
     function getHighestVote(votesObj) {
@@ -424,9 +458,7 @@
     function checkWinCondition() {
         let aliveM = 0; let aliveV = 0;
         for (let p of gameData.waiting_players) {
-            if (!gameData.dead_players[p]) {
-                if (gameData.player_teams[p] === 'mafia') aliveM++; else aliveV++;
-            }
+            if (!gameData.dead_players[p]) { if (gameData.player_teams[p] === 'mafia') aliveM++; else aliveV++; }
         }
         if (aliveM === 0) { gameData.state = 'GAME_OVER'; gameData.winner = 'village'; return true; }
         if (aliveM >= aliveV) { gameData.state = 'GAME_OVER'; gameData.winner = 'mafia'; return true; }
@@ -436,25 +468,20 @@
     async function syncData() {
         await fetchDatabase(); 
         if (localStorage.getItem('is_narrator') === "true") await engineTick(); 
+        handleAudioAndEvents();
         updateUI();
     }
     
-    function startSync() { 
-        syncData(); 
-        syncInterval = setInterval(syncData, 3000); 
-        localTimerInterval = setInterval(updateLocalTimers, 1000); 
-    }
+    function startSync() { syncData(); syncInterval = setInterval(syncData, 3000); localTimerInterval = setInterval(updateLocalTimers, 1000); }
 
     function updateLocalTimers() {
         if(gameData.timer_end <= 0) return;
         let left = Math.max(0, Math.floor((gameData.timer_end - Date.now()) / 1000));
         
         if (gameData.state === 'COUNTDOWN') {
-            document.getElementById('waitingTimer').style.display = 'block';
-            document.getElementById('waitSecs').innerText = left;
+            document.getElementById('waitingTimer').style.display = 'block'; document.getElementById('waitSecs').innerText = left;
         } else if (gameData.state !== 'WAITING' && gameData.state !== 'GAME_OVER') {
-            let m = Math.floor(left / 60); let s = left % 60;
-            document.getElementById('timeSecs').innerText = `${m}:${s < 10 ? '0':''}${s}`;
+            let m = Math.floor(left / 60); let s = left % 60; document.getElementById('timeSecs').innerText = `${m}:${s < 10 ? '0':''}${s}`;
         }
     }
 
@@ -466,39 +493,27 @@
             document.getElementById('waitingArea').style.display = 'none'; 
             if(!isNarrator) document.getElementById('gameArea').style.display = 'block';
             
-            // إظهار شريط الفوز
             document.getElementById('winnerArea').style.display = 'block';
             document.getElementById('phaseIndicator').style.display = 'none';
             document.getElementById('gameTimer').style.display = 'none';
             document.getElementById('votingSection').style.display = 'none';
             document.getElementById('specialRoleSection').style.display = 'none';
-            document.getElementById('logoutBtnGame').style.display = 'none'; // تم نقله للأعلى
+            document.getElementById('logoutBtnGame').style.display = 'none'; 
+            document.getElementById('ghostChatSection').style.display = 'none'; // إخفاء شات الأموات عند النهاية
             
-            // التحكم بزر إعادة اللعبة للراوي فقط
-            if(isNarrator) {
-                document.getElementById('narratorResetBtn').style.display = 'block';
-            }
+            if(isNarrator) document.getElementById('narratorResetBtn').style.display = 'block';
 
             let title = document.getElementById('winnerTitle');
-            if(gameData.winner === 'village') { 
-                title.innerText = "🎉 فاز المواطنون الشرفاء! تم تطهير القرية."; 
-                title.style.color = "var(--village-color)"; 
-            } else { 
-                title.innerText = "🕴️ فازت المافيا! لقد سيطروا على القرية."; 
-                title.style.color = "var(--mafia-color)"; 
-            }
+            if(gameData.winner === 'village') { title.innerText = "🎉 فاز المواطنون الشرفاء! تم تطهير القرية."; title.style.color = "var(--village-color)"; } 
+            else { title.innerText = "🕴️ فازت المافيا! لقد سيطروا على القرية."; title.style.color = "var(--mafia-color)"; }
 
-            // تحديث قائمة اللاعبين وإظهار أدوار الجميع!
             document.getElementById('playersTopPanel').innerHTML = gameData.waiting_players.map(p => {
-                let role = gameData.player_roles[p] || "";
                 let isDead = gameData.dead_players[p];
-                return `<div class="player-badge ${isDead ? 'dead' : ''}"><span class="name">${p}</span> ${isDead ? '💀' : '✨'}<br><span class="role-reveal">${role}</span></div>`;
+                return `<div class="player-badge ${isDead ? 'dead' : ''}"><span class="name">${p}</span> ${isDead ? '💀' : '✨'}<br><span class="role-reveal">${gameData.player_roles[p] || ""}</span></div>`;
             }).join('');
             
-            // السماح للجميع بالتحدث في النهاية
             document.getElementById('globalChatInput').disabled = false;
             document.getElementById('globalChatInput').placeholder = "ناقش اللعبة هنا بعد النهاية...";
-
             renderChat('globalChatBox', filterGlobalChat(gameData.global_chat || [], me), 'global-msg');
             return;
         }
@@ -514,12 +529,18 @@
             
             updateTopPanelAndPhase(me);
             renderChat('globalChatBox', filterGlobalChat(gameData.global_chat || [], me), 'global-msg');
-            if(!isNarrator && gameData.player_teams[me] === 'mafia') renderChat('mafiaChatBox', gameData.mafia_chat || [], 'mafia-msg');
+            
+            // تحديث الشاتات السرية بناءً على حالة اللاعب
+            if(!isNarrator) {
+                if (gameData.player_teams[me] === 'mafia') renderChat('mafiaChatBox', gameData.mafia_chat || [], 'mafia-msg');
+                if (gameData.dead_players[me]) renderChat('ghostChatBox', gameData.ghost_chat || [], 'ghost-msg');
+            }
         }
 
         if (isNarrator) {
             document.getElementById('narratorWaitingList').innerHTML = gameData.waiting_players.map(p => `• <b>${p}</b> ${gameData.dead_players[p] ? '💀' : ''} ${gameData.player_roles?.[p] ? `<span style="color:var(--accent);">[${gameData.player_roles[p]}]</span>` : ''}`).join('<br>');
             renderChat('narratorGlobalChat', gameData.global_chat || [], 'global-msg');
+            renderChat('narratorGhostChat', gameData.ghost_chat || [], 'ghost-msg');
         }
     }
 
@@ -533,7 +554,7 @@
         const phaseInfo = document.getElementById('phaseIndicator');
         
         document.getElementById('playersTopPanel').innerHTML = gameData.waiting_players.map(p => {
-            if (gameData.dead_players[p]) return `<div class="player-badge dead"><span class="name">${p}</span> 💀<br><span class="role-reveal" style="color:var(--mafia-color); font-weight:normal;">${gameData.dead_players[p]}</span></div>`;
+            if (gameData.dead_players[p]) return `<div class="player-badge dead"><span class="name">${p}</span> 💀</div>`;
             return `<div class="player-badge">${p}</div>`;
         }).join('');
 
@@ -543,23 +564,30 @@
         
         if(!me) return;
         document.getElementById('statusLabel').innerHTML = `👤 ${me} | 🎭 الدور: <b style="color:var(--accent); font-size: 18px;">${gameData.player_roles[me]}</b> ${isDead ? '<span style="color:#e74c3c;">(ميت 💀)</span>' : ''}`;
-        document.getElementById('mafiaChatSection').style.display = (gameData.player_teams[me] === 'mafia') ? 'block' : 'none';
+        
+        document.getElementById('mafiaChatSection').style.display = (gameData.player_teams[me] === 'mafia' && !isDead) ? 'block' : 'none';
+        document.getElementById('ghostChatSection').style.display = isDead ? 'block' : 'none';
 
         const voteSec = document.getElementById('votingSection');
         const specSec = document.getElementById('specialRoleSection');
         voteSec.style.display = 'none'; specSec.style.display = 'none';
         
-        // منع الأموات من التحدث أثناء اللعب
         document.getElementById('globalChatInput').disabled = isDead || isNight;
-        if(isDead) document.getElementById('globalChatInput').placeholder = "الأموات لا يتحدثون 👻...";
+        if(isDead) document.getElementById('globalChatInput').placeholder = "أنت شبح الآن 👻 استخدم شات الأموات بالأسفل...";
         else if(isNight) document.getElementById('globalChatInput').placeholder = "الكل نائم... 💤";
         else document.getElementById('globalChatInput').placeholder = "تحدث مع الجميع هنا...";
 
         if (!isDead) {
             let aliveOthers = gameData.waiting_players.filter(p => !gameData.dead_players[p] && p !== me);
-            let opts = '<option value="">اختر لاعباً...</option>' + aliveOthers.map(p => `<option value="${p}">${p}</option>`).join('');
-            let specialRolesWithActions = ["الطبيب", "المحقق", "الحارس", "المعطل", "القناص", "الساحرة"];
+            
+            // 🔥 الحل الجذري لمشكلة القائمة المنسدلة: نقوم بتحديث الـ HTML فقط إذا تغيرت الخيارات!
+            let optsStr = '<option value="">اختر لاعباً...</option>' + aliveOthers.map(p => `<option value="${p}">${p}</option>`).join('');
+            
+            if (document.getElementById('voteSelect').innerHTML !== optsStr) {
+                document.getElementById('voteSelect').innerHTML = optsStr;
+            }
 
+            let specialRolesWithActions = ["الطبيب", "المحقق", "الحارس", "المعطل", "القناص", "الساحرة"];
             let hasVoted = gameData.votes && gameData.votes[me];
             let hasSpecial = gameData.night_actions && gameData.night_actions[gameData.player_roles[me]];
             
@@ -574,17 +602,17 @@
             if (isNight) {
                 if (gameData.player_teams[me] === 'mafia' && gameData.player_roles[me] !== "الجاسوس") {
                     voteSec.style.display = 'block'; document.getElementById('voteTitle').innerText = '🗡️ اغتيال المافيا';
-                    document.getElementById('voteSelect').innerHTML = opts;
                 } 
                 if (specialRolesWithActions.includes(gameData.player_roles[me])) {
                     specSec.style.display = 'block';
-                    document.getElementById('specialTitle').innerText = `✨ مهمتك: ${gameData.player_roles[me]}`;
-                    let actionOpts = '<option value="">اختر لاعباً للتنفيذ...</option>' + gameData.waiting_players.filter(p=>!gameData.dead_players[p]).map(p => `<option value="${p}">${p}</option>`).join('');
-                    document.getElementById('specialSelect').innerHTML = actionOpts;
+                    let allAlive = gameData.waiting_players.filter(p=>!gameData.dead_players[p]);
+                    let actionOpts = '<option value="">اختر لاعباً للتنفيذ...</option>' + allAlive.map(p => `<option value="${p}">${p}</option>`).join('');
+                    if (document.getElementById('specialSelect').innerHTML !== actionOpts) {
+                        document.getElementById('specialSelect').innerHTML = actionOpts;
+                    }
                 }
             } else if (gameData.day_number > 1) { 
                 voteSec.style.display = 'block'; document.getElementById('voteTitle').innerText = '⚖️ محكمة القرية (تصويت الإعدام)';
-                document.getElementById('voteSelect').innerHTML = opts;
             }
         }
     }
@@ -608,15 +636,22 @@
     async function sendGlobalMsg() {
         const v = document.getElementById('globalChatInput').value.trim(); if(!v) return;
         document.getElementById('globalChatInput').value = "";
-        await fetchDatabase(); 
-        let prefix = gameData.state === 'GAME_OVER' && gameData.dead_players[localStorage.getItem('player_name')] ? '👻' : '';
-        gameData.global_chat.push(`<b style="color:var(--accent);">${prefix} ${localStorage.getItem('player_name')}:</b> ${v}`); 
-        await saveDatabase(); syncData();
+        await fetchDatabase(); gameData.global_chat.push(`<b style="color:var(--accent);">${localStorage.getItem('player_name')}:</b> ${v}`); await saveDatabase(); syncData();
     }
+    
     async function sendMafiaMsg() {
         const v = document.getElementById('mafiaChatInput').value.trim(); if(!v) return;
         document.getElementById('mafiaChatInput').value = "";
         await fetchDatabase(); gameData.mafia_chat.push(`<b>${localStorage.getItem('player_name')}:</b> ${v}`); await saveDatabase(); syncData();
+    }
+
+    async function sendGhostMsg() {
+        const v = document.getElementById('ghostChatInput').value.trim(); if(!v) return;
+        document.getElementById('ghostChatInput').value = "";
+        await fetchDatabase(); 
+        if(!gameData.ghost_chat) gameData.ghost_chat = [];
+        gameData.ghost_chat.push(`<b>👻 ${localStorage.getItem('player_name')}:</b> ${v}`); 
+        await saveDatabase(); syncData();
     }
     
     function renderChat(id, msgs, cls) {
@@ -637,15 +672,12 @@
         if(document.getElementById('setMayor').checked) arr.push("العمدة");
         if(document.getElementById('setGodfather').checked) arr.push("الزعيم");
         if(document.getElementById('setSpy').checked) arr.push("الجاسوس");
-        
-        gameData.allowed_roles = arr; 
-        alert("تم حفظ إعدادات الأدوار بنجاح! ✔️");
-        saveDatabase();
+        gameData.allowed_roles = arr; alert("تم حفظ إعدادات الأدوار بنجاح! ✔️"); saveDatabase();
     }
 
     async function clearAllData() {
         if(confirm("هل أنت متأكد من إعادة ضبط اللعبة بالكامل؟ سيتم مسح كل شيء!")) {
-            gameData = { state: 'WAITING', phase_name: 'الانتظار', day_number: 1, timer_end: 0, waiting_players: [], player_roles: {}, player_teams: {}, dead_players: {}, global_chat: [], mafia_chat: [], votes: {}, night_actions: {}, allowed_roles: ["الطبيب", "المحقق"], winner: null };
+            gameData = { state: 'WAITING', phase_name: 'الانتظار', day_number: 1, timer_end: 0, waiting_players: [], player_roles: {}, player_teams: {}, dead_players: {}, global_chat: [], mafia_chat: [], ghost_chat: [], votes: {}, night_actions: {}, allowed_roles: ["الطبيب", "المحقق"], winner: null };
             await saveDatabase(); localStorage.clear(); location.reload();
         }
     }
