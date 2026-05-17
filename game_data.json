@@ -1,8 +1,8 @@
 {
-  "state": "WAITING",
+  "state": "COUNTDOWN",
   "phase_name": "الانتظار",
   "day_number": 1,
-  "timer_end": 0,
+  "timer_end": 1779000723361,
   "waiting_players": [
     "A",
     "B",
