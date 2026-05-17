@@ -29,7 +29,9 @@
   ],
   "mafia_chat": [],
   "ghost_chat": [],
-  "votes": {},
+  "votes": {
+    "قاسم": "M"
+  },
   "night_actions": {},
   "allowed_roles": [],
   "winner": null
