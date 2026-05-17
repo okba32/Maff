@@ -28,7 +28,9 @@
     "<b style=\"color:var(--accent);\">قاسم:</b> هلا",
     "<b style=\"color:var(--accent);\">د:</b> ه"
   ],
-  "mafia_chat": [],
+  "mafia_chat": [
+    "<b>د:</b> ا"
+  ],
   "votes": {},
   "night_actions": {},
   "allowed_roles": [
