@@ -1,18 +1,30 @@
 {
-  "state": "COUNTDOWN",
-  "phase_name": "الانتظار",
+  "state": "DAY",
+  "phase_name": "نهار اليوم الأول (تعارف)",
   "day_number": 1,
-  "timer_end": 1779000723361,
+  "timer_end": 1779000756226,
   "waiting_players": [
     "A",
     "B",
     "حمود",
     "عقبه"
   ],
-  "player_roles": {},
-  "player_teams": {},
+  "player_roles": {
+    "B": "المافيا (عضو)",
+    "A": "مواطن صالح",
+    "حمود": "مواطن صالح",
+    "عقبه": "مواطن صالح"
+  },
+  "player_teams": {
+    "B": "mafia",
+    "A": "village",
+    "حمود": "village",
+    "عقبه": "village"
+  },
   "dead_players": {},
-  "global_chat": [],
+  "global_chat": [
+    "<b style=\"color:var(--accent);\">[نظام] بدأت اللعبة! لديكم 30 ثانية للتعارف قبل حلول الليل.</b>"
+  ],
   "mafia_chat": [],
   "votes": {},
   "night_actions": {},
