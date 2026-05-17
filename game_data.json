@@ -1,8 +1,8 @@
 {
-  "state": "DAY",
-  "phase_name": "نهار اليوم الأول (تعارف)",
+  "state": "NIGHT",
+  "phase_name": "الليل المظلم 🌙",
   "day_number": 1,
-  "timer_end": 1779001932316,
+  "timer_end": 1779001965277,
   "waiting_players": [
     "H",
     "M",
@@ -28,7 +28,8 @@
   "global_chat": [
     "<b style=\"color:var(--accent);\">[نظام] بدأت اللعبة! لديكم 30 ثانية للتعارف قبل حلول الليل.</b>",
     "<b style=\"color:var(--accent);\"> عقبه:</b> سلام",
-    "<b style=\"color:var(--accent);\">قاسم:</b> هلا"
+    "<b style=\"color:var(--accent);\">قاسم:</b> هلا",
+    "<b style=\"color:#9b59b6;\">🌙 خيّم الليل، المافيا والأدوار الخاصة يقومون بعملهم الآن بصمت...</b>"
   ],
   "mafia_chat": [],
   "votes": {},
