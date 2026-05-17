@@ -4,80 +4,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mafia Game Manager - Pro Auto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-day: #1a2a34; --bg-night: #0a1116;
-            --card-bg-day: #2c3e50; --card-bg-night: #1c2833;
+            --card-bg-day: #2c3e50; --card-bg-night: #151f28;
             --accent: #e67e22; --accent-hover: #d35400;
-            --text: #ecf0f1; --mafia-color: #c0392b;
-            --village-color: #27ae60; --global-color: #3498db;
-            --special-color: #9b59b6; --transition-speed: 1.5s;
+            --text: #ecf0f1; --mafia-color: #e74c3c;
+            --village-color: #2ecc71; --global-color: #3498db;
+            --special-color: #9b59b6; --transition-speed: 1s;
         }
-        body { background-color: var(--bg-day); color: var(--text); font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; overflow-x: hidden; transition: background-color var(--transition-speed) ease; padding: 20px 0; }
-        body.night-mode { background-color: var(--bg-night); }
-        .container { width: 90%; max-width: 600px; background: var(--card-bg-day); padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 0 auto 20px auto; transition: background-color var(--transition-speed) ease; position: relative; }
-        body.night-mode .container { background: var(--card-bg-night); box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(192, 57, 43, 0.1); }
-        h2, h3 { text-align: center; color: var(--accent); margin-top: 0; }
-        input, select, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; font-size: 14px; transition: all 0.3s ease; }
-        input, select, textarea { background-color: #ecf0f1; color: #2c3e50; outline: none; border: 2px solid transparent; }
-        input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-        button { background-color: var(--accent); color: white; font-weight: bold; cursor: pointer; font-size: 15px; }
-        button:hover { background-color: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        button:disabled { background-color: #7f8c8d; cursor: not-allowed; transform: none; box-shadow: none; }
-        .back-btn { background-color: #7f8c8d; } .danger-btn { background-color: var(--mafia-color); }
+        body { 
+            background-color: var(--bg-day); 
+            color: var(--text); 
+            font-family: 'Cairo', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            transition: background-color var(--transition-speed) ease; 
+            padding: 30px 0; 
+            background-image: radial-gradient(circle at top right, rgba(255,255,255,0.05), transparent 40%);
+        }
+        body.night-mode { 
+            background-color: var(--bg-night); 
+            background-image: radial-gradient(circle at top right, rgba(142, 68, 173, 0.05), transparent 40%);
+        }
+        .container { 
+            width: 90%; 
+            max-width: 650px; 
+            background: var(--card-bg-day); 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); 
+            margin: 0 auto 20px auto; 
+            transition: all var(--transition-speed) ease; 
+            position: relative; 
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        body.night-mode .container { 
+            background: var(--card-bg-night); 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(192, 57, 43, 0.15); 
+            border-color: rgba(231, 76, 60, 0.1);
+        }
+        h2, h3 { text-align: center; color: var(--accent); margin-top: 0; font-weight: 800; }
         
+        input, select, textarea { 
+            width: 100%; padding: 14px; margin: 10px 0; 
+            border-radius: 12px; border: 2px solid rgba(255,255,255,0.1); 
+            box-sizing: border-box; font-size: 15px; font-family: 'Cairo', sans-serif;
+            background-color: rgba(255,255,255,0.9); color: #2c3e50; 
+            transition: all 0.3s ease; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); background-color: #fff; outline: none; box-shadow: 0 0 10px rgba(230, 126, 34, 0.3); }
+        
+        button { 
+            width: 100%; padding: 14px; margin: 10px 0; 
+            border-radius: 12px; border: none; 
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: white; font-weight: 700; cursor: pointer; font-size: 16px; font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(230, 126, 34, 0.5); }
+        button:active { transform: translateY(1px); }
+        button:disabled { background: #7f8c8d; cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.7; }
+        
+        .back-btn { background: linear-gradient(135deg, #7f8c8d, #636e72); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .danger-btn { background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3); }
+        .success-btn { background: linear-gradient(135deg, #2ecc71, #27ae60); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3); }
+        .special-btn { background: linear-gradient(135deg, #9b59b6, #8e44ad); box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3); }
+
         #gameArea, #narratorArea, #waitingArea, #votingSection, #specialRoleSection, #winnerArea { display: none; }
         
-        .timer-display { text-align: center; font-size: 24px; font-weight: bold; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; color: #f1c40f; margin-bottom: 15px; border: 1px solid #f1c40f; }
+        .timer-display { text-align: center; font-size: 26px; font-weight: 800; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 15px; color: #f1c40f; margin-bottom: 20px; border: 2px solid rgba(241, 196, 15, 0.5); box-shadow: 0 5px 15px rgba(0,0,0,0.2); letter-spacing: 1px; }
         
-        .top-players-panel { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #34495e; }
-        .player-badge { background: #34495e; padding: 8px 15px; border-radius: 8px; font-size: 13px; font-weight: bold; text-align: center; min-width: 80px; border-bottom: 3px solid var(--accent); animation: fadeIn 0.5s ease; }
-        .player-badge.dead { background: rgba(192, 57, 43, 0.2); border-bottom-color: var(--mafia-color); color: #95a5a6; text-decoration: line-through; }
-        .player-badge.dead .role-reveal { display: block; color: var(--mafia-color); font-size: 11px; margin-top: 5px; text-decoration: none; }
+        .top-players-panel { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; background: rgba(0,0,0,0.25); padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .player-badge { background: linear-gradient(145deg, #34495e, #2c3e50); padding: 10px 18px; border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center; min-width: 85px; border-bottom: 4px solid var(--accent); animation: fadeIn 0.5s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .player-badge.dead { background: rgba(192, 57, 43, 0.15); border-bottom-color: var(--mafia-color); color: #bdc3c7; text-decoration: line-through; box-shadow: none; opacity: 0.8; }
+        .player-badge.dead .role-reveal { display: block; color: var(--mafia-color); font-size: 12px; margin-top: 6px; text-decoration: none; font-weight: 800; }
         .role-reveal { display: none; }
         
-        .chat-box { background: rgba(0,0,0,0.3); height: 180px; overflow-y: auto; padding: 10px; border-radius: 8px; border: 1px solid #34495e; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .msg { background: #34495e; padding: 8px 12px; border-radius: 8px; font-size: 13px; border-right: 4px solid var(--accent); animation: fadeIn 0.3s ease; }
-        .msg.mafia-msg { border-right-color: var(--mafia-color); background: rgba(192, 57, 43, 0.15); }
+        .chat-box { background: rgba(0,0,0,0.4); height: 200px; overflow-y: auto; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
+        .chat-box::-webkit-scrollbar { width: 8px; }
+        .chat-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        
+        .msg { background: #34495e; padding: 10px 15px; border-radius: 12px; border-bottom-right-radius: 0; font-size: 14px; border-right: 4px solid var(--accent); animation: fadeIn 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .msg.mafia-msg { border-right-color: var(--mafia-color); background: rgba(231, 76, 60, 0.15); }
         .msg.global-msg { border-right-color: var(--global-color); background: rgba(52, 152, 219, 0.15); }
         
-        .phase-indicator { text-align: center; font-size: 20px; margin-bottom: 15px; padding: 10px; border-radius: 8px; font-weight: bold; }
-        .phase-day { background: rgba(241, 196, 15, 0.2); color: #f1c40f; border: 1px solid #f1c40f; }
-        .phase-night { background: rgba(142, 68, 173, 0.2); color: #9b59b6; border: 1px solid #9b59b6; }
-        .vote-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px dashed var(--accent); margin-bottom: 15px; }
+        .phase-indicator { text-align: center; font-size: 22px; margin-bottom: 20px; padding: 15px; border-radius: 12px; font-weight: 800; transition: all 0.5s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .phase-day { background: linear-gradient(135deg, rgba(241, 196, 15, 0.2), rgba(243, 156, 18, 0.2)); color: #f39c12; border: 2px solid rgba(241, 196, 15, 0.5); }
+        .phase-night { background: linear-gradient(135deg, rgba(142, 68, 173, 0.2), rgba(155, 89, 182, 0.2)); color: #9b59b6; border: 2px solid rgba(155, 89, 182, 0.5); }
         
-        .flex-row { display: flex; gap: 10px; } .flex-row button { flex: 1; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .vote-box { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px; border: 2px dashed rgba(230, 126, 34, 0.5); margin-bottom: 20px; position: relative; overflow: hidden; }
+        .vote-box::before { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: var(--accent); }
+        .vote-box.special-box { border-color: rgba(155, 89, 182, 0.5); }
+        .vote-box.special-box::before { background: var(--special-color); }
+        
+        .flex-row { display: flex; gap: 15px; align-items: center; } .flex-row button { flex: 1; margin: 0; } .flex-row input, .flex-row select { margin: 0; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .winner-text { font-size: 30px; font-weight: bold; text-align: center; margin: 20px 0; animation: pulse 1s infinite alternate; }
+        .winner-text { font-size: 35px; font-weight: 800; text-align: center; margin: 30px 0; animation: pulse 1s infinite alternate; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
         
-        /* Checkboxes */
-        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .settings-grid label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+        /* Checkboxes Styling - Modern Look */
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; background: rgba(0,0,0,0.25); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .settings-grid label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; transition: all 0.2s; border: 1px solid transparent; }
+        .settings-grid label:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        .settings-grid input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; cursor: pointer; }
+        .role-desc { font-size: 11px; color: #bdc3c7; display: block; margin-top: 3px; font-weight: 400; }
     </style>
 </head>
 <body>
 
 <div class="container" id="loginArea">
-    <h2>انضم إلى قرية المافيا</h2>
+    <h2>انضم إلى قرية المافيا 🕵️‍♂️</h2>
+    <p style="text-align: center; color: #bdc3c7; margin-bottom: 25px;">أدخل اسمك للدخول إلى عالم مليء بالغموض والخداع</p>
     <input type="text" id="playerName" placeholder="اكتب اسمك الكريم هنا...">
     <button onclick="login()" id="loginBtn">دخول اللعبة</button>
-    <button onclick="showNarratorLogin()" class="back-btn" style="background:var(--village-color)">دخول كراوٍ (مدير اللعبة والمحرك)</button>
+    <hr style="border:0; border-top: 1px solid rgba(255,255,255,0.1); margin: 25px 0;">
+    <button onclick="showNarratorLogin()" class="back-btn success-btn">دخول كراوٍ (مدير اللعبة والمحرك) 👑</button>
 </div>
 
 <div class="container" id="waitingArea" style="text-align: center;">
     <h2>غرفة الانتظار ⏳</h2>
     <div id="waitingTimer" class="timer-display" style="display:none;">يبدأ اللعب بعد: <span id="waitSecs">60</span>ث</div>
-    <p>في انتظار اللاعبين (يتطلب 4 على الأقل لبدء العد التنازلي التلقائي)...</p>
-    <div id="waitingPlayersCount" style="margin-top:15px; color:var(--accent);"></div>
-    <button id="leaveWaitingBtn" onclick="leaveWaitingRoom()" class="back-btn" style="margin-top: 20px;">رجوع (إلغاء الانتظار)</button>
+    <p style="font-size: 16px; color: #bdc3c7;">في انتظار اللاعبين... (يتطلب 4 لاعبين على الأقل لبدء العد التنازلي)</p>
+    <div id="waitingPlayersCount" style="margin-top:20px; color:var(--accent); font-size: 20px; font-weight: bold;"></div>
+    <button id="leaveWaitingBtn" onclick="leaveWaitingRoom()" class="back-btn" style="margin-top: 30px;">رجوع (إلغاء الانتظار)</button>
 </div>
 
 <div class="container" id="winnerArea">
     <h2 id="winnerTitle" class="winner-text"></h2>
-    <div id="winnerDetails" style="text-align:center; font-size: 18px; margin-bottom: 20px;"></div>
-    <button onclick="clearAllData()" class="start-btn">بدء لعبة جديدة بالكامل</button>
+    <div id="winnerDetails" style="text-align:center; font-size: 18px; margin-bottom: 30px; color: #ecf0f1;"></div>
+    <button onclick="clearAllData()" class="success-btn">بدء لعبة جديدة بالكامل 🔄</button>
 </div>
 
 <div class="container" id="gameArea">
@@ -85,70 +148,122 @@
     <div id="gameTimer" class="timer-display">الوقت المتبقي: <span id="timeSecs">--</span></div>
     
     <div id="playersTopPanel" class="top-players-panel"></div>
-    <h3 id="statusLabel" style="border-bottom: 1px solid #34495e; padding-bottom: 10px;"></h3>
+    <h3 id="statusLabel" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;"></h3>
     
     <div id="votingSection" class="vote-box">
-        <h4 id="voteTitle" style="margin-top:0; color:var(--accent);">التصويت</h4>
-        <p id="voteDesc" style="font-size: 13px; margin-bottom: 10px;"></p>
+        <h4 id="voteTitle" style="margin-top:0; color:var(--accent); font-size: 18px;">التصويت</h4>
+        <p id="voteDesc" style="font-size: 14px; margin-bottom: 15px; color:#bdc3c7;"></p>
         <div class="flex-row">
             <select id="voteSelect"><option value="">اختر لاعباً...</option></select>
-            <button id="submitVoteBtn" onclick="submitVote()" style="width: 100px;">تصويت</button>
+            <button id="submitVoteBtn" onclick="submitVote()" style="width: 120px;">تصويت</button>
         </div>
     </div>
 
-    <div id="specialRoleSection" class="vote-box" style="border-color: var(--special-color);">
-        <h4 id="specialTitle" style="margin-top:0; color:var(--special-color);">قدرتك الخاصة</h4>
-        <p id="specialDesc" style="font-size: 13px; margin-bottom: 10px;"></p>
+    <div id="specialRoleSection" class="vote-box special-box">
+        <h4 id="specialTitle" style="margin-top:0; color:var(--special-color); font-size: 18px;">قدرتك الخاصة</h4>
+        <p id="specialDesc" style="font-size: 14px; margin-bottom: 15px; color:#bdc3c7;"></p>
         <div class="flex-row">
             <select id="specialSelect"><option value="">اختر لاعباً...</option></select>
-            <button id="submitSpecialBtn" onclick="submitSpecialAction()" style="background:var(--special-color); width: 100px;">تنفيذ</button>
+            <button id="submitSpecialBtn" onclick="submitSpecialAction()" class="special-btn" style="width: 120px;">تنفيذ</button>
         </div>
     </div>
 
     <div>
-        <h4 style="color: var(--global-color); margin-bottom: 5px;">الشات العام 🌍</h4>
+        <h4 style="color: var(--global-color); margin-bottom: 10px; font-size: 16px;">الشات العام 🌍</h4>
         <div class="chat-box" id="globalChatBox"></div>
         <div class="flex-row">
-            <input type="text" id="globalChatInput" placeholder="تحدث مع الجميع...">
-            <button id="globalSendBtn" style="background-color: var(--global-color); width: 80px;" onclick="sendGlobalMsg()">إرسال</button>
+            <input type="text" id="globalChatInput" placeholder="تحدث مع الجميع هنا...">
+            <button id="globalSendBtn" style="background: var(--global-color); width: 100px; margin:0;" onclick="sendGlobalMsg()">إرسال</button>
         </div>
     </div>
 
-    <div id="mafiaChatSection" style="margin-top: 15px;">
-        <h4 style="color: var(--mafia-color); margin-bottom: 5px;">شات المافيا السري 🕵️‍♂️</h4>
-        <div class="chat-box" id="mafiaChatBox"></div>
+    <div id="mafiaChatSection" style="margin-top: 25px; display:none;">
+        <h4 style="color: var(--mafia-color); margin-bottom: 10px; font-size: 16px;">شات المافيا السري 🕵️‍♂️🔪</h4>
+        <div class="chat-box" id="mafiaChatBox" style="border-color: rgba(231, 76, 60, 0.3);"></div>
         <div class="flex-row">
-            <input type="text" id="mafiaChatInput" placeholder="تحدث بصمت مع فريقك...">
-            <button class="danger-btn" id="mafiaSendBtn" style="width: 80px;" onclick="sendMafiaMsg()">إرسال</button>
+            <input type="text" id="mafiaChatInput" placeholder="خطط مع فريقك بصمت...">
+            <button class="danger-btn" id="mafiaSendBtn" style="width: 100px; margin:0;" onclick="sendMafiaMsg()">إرسال</button>
         </div>
     </div>
-    <button onclick="logout()" class="back-btn" style="margin-top: 15px;">تسجيل الخروج</button>
+    <button onclick="logout()" class="back-btn" style="margin-top: 30px;">تسجيل الخروج</button>
 </div>
 
 <div class="container" id="narratorArea">
-    <h2>لوحة تحكم الراوي 👑 (محرك اللعبة)</h2>
-    <p style="color: #e74c3c; font-size:12px; text-align:center;">⚠️ لا تغلق هذه الصفحة أبداً أثناء اللعب، المتصفح هنا هو من يحسب الوقت ويقوم بالتصفيات التلقائية!</p>
+    <h2 style="font-size: 24px;">لوحة تحكم الراوي 👑</h2>
+    <p style="color: #e74c3c; font-size:13px; text-align:center; font-weight: bold; background: rgba(231, 76, 60, 0.1); padding: 10px; border-radius: 8px;">⚠️ لا تغلق هذه الصفحة أبداً أثناء اللعب، المتصفح هنا هو من يحسب الوقت ويقوم بالتصفيات التلقائية!</p>
     
-    <div id="narratorSettingsPanel" class="vote-box">
-        <h4 style="margin-top: 0;">⚙️ إعدادات الأدوار الخاصة (لما فوق 6 لاعبين)</h4>
+    <div id="narratorSettingsPanel" class="vote-box" style="border-color: var(--village-color);">
+        <h4 style="margin-top: 0; color: var(--village-color);">⚙️ إعدادات الأدوار الخاصة في اللعبة</h4>
+        <p style="font-size: 12px; color:#bdc3c7; margin-bottom: 15px;">حدد الأدوار التي ترغب بوجودها (المهام والتأثيرات سيتم إدارتها لاحقاً في النظام)</p>
         <div class="settings-grid">
-            <label><input type="checkbox" id="setDoc" checked> الطبيب 💉</label>
-            <label><input type="checkbox" id="setDet" checked> المحقق 🔍</label>
-            <label><input type="checkbox" id="setGuard"> الحارس الشخصي 🛡️</label>
-            <label><input type="checkbox" id="setHooker"> المعطل 🚫</label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setDoc" checked> <b>الطبيب 💉</b>
+                    <span class="role-desc">حماية شخص من القتل</span>
+                </div>
+            </label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setDet" checked> <b>المحقق 🔍</b>
+                    <span class="role-desc">كشف هوية المافيا</span>
+                </div>
+            </label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setGuard"> <b>الحارس 🛡️</b>
+                    <span class="role-desc">يتلقى الرصاصة بدلاً من الهدف</span>
+                </div>
+            </label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setHooker"> <b>المعطل 🚫</b>
+                    <span class="role-desc">تجميد قدرة شخص بالليل</span>
+                </div>
+            </label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setSniper"> <b>القناص 🎯</b>
+                    <span class="role-desc">قتل شخص واحد في اللعبة</span>
+                </div>
+            </label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setWitch"> <b>الساحرة 🧙‍♀️</b>
+                    <span class="role-desc">ترياق للحياة وسم للقتل</span>
+                </div>
+            </label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setMayor"> <b>العمدة 🎩</b>
+                    <span class="role-desc">صوته في الإعدام يحسب بصوتين</span>
+                </div>
+            </label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setGodfather"> <b>العراب 🕴️</b>
+                    <span class="role-desc">زعيم، لا يكشفه المحقق</span>
+                </div>
+            </label>
+            <label>
+                <div>
+                    <input type="checkbox" id="setSpy"> <b>الجاسوس 🕵️</b>
+                    <span class="role-desc">يعرف المافيا دون أن يعرفوه</span>
+                </div>
+            </label>
         </div>
-        <button onclick="saveSettings()" style="background: var(--village-color);">حفظ الإعدادات التلقائية</button>
+        <button onclick="saveSettings()" class="success-btn">حفظ وتطبيق الإعدادات</button>
     </div>
 
-    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-        <div class="players-list" id="narratorWaitingList" style="margin-bottom: 10px;">لا يوجد لاعبين...</div>
-        <p style="font-size:13px; color:var(--accent);">حالة اللعبة الحالية: <span id="narratorGameState">في الانتظار</span></p>
+    <div style="background: rgba(0,0,0,0.25); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);">
+        <h4 style="margin-top: 0; color: #ecf0f1;">اللاعبون المتصلون:</h4>
+        <div class="players-list" id="narratorWaitingList" style="margin-bottom: 15px; font-size: 15px; line-height: 1.8;">لا يوجد لاعبين...</div>
+        <p style="font-size:14px; color:var(--accent); font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">حالة اللعبة الحالية: <span id="narratorGameState">في الانتظار</span></p>
     </div>
 
-    <h4>الشات العام 🌍</h4>
-    <div class="chat-box" id="narratorGlobalChat" style="height: 120px;"></div>
-    <button onclick="clearAllData()" class="danger-btn" style="margin-top: 25px;">مسح كل البيانات وإنهاء اللعبة فوراً</button>
-    <button onclick="logout()" class="back-btn">خروج</button>
+    <h4 style="margin-bottom: 10px;">مراقبة الشات العام 🌍</h4>
+    <div class="chat-box" id="narratorGlobalChat" style="height: 150px;"></div>
+    <button onclick="clearAllData()" class="danger-btn" style="margin-top: 25px;">مسح كل البيانات وإنهاء اللعبة فوراً 🛑</button>
+    <button onclick="logout()" class="back-btn">خروج من وضع الراوي</button>
 </div>
 
 <script>
@@ -161,12 +276,13 @@
     let syncInterval, localTimerInterval;
     let currentSha = null;
     let gameData = {
-        state: 'WAITING', // WAITING, COUNTDOWN, DAY, NIGHT, VOTE_TALLY, GAME_OVER
+        state: 'WAITING', // WAITING, COUNTDOWN, DAY, NIGHT, GAME_OVER
         phase_name: 'الانتظار',
         day_number: 1,
         timer_end: 0,
         waiting_players: [], player_roles: {}, player_teams: {}, dead_players: {},
-        global_chat: [], mafia_chat: [], votes: {}, night_actions: {}, allowed_roles: ["الطبيب", "المحقق"], winner: null
+        global_chat: [], mafia_chat: [], votes: {}, night_actions: {}, 
+        allowed_roles: ["الطبيب", "المحقق"], winner: null
     };
 
     function encodeBase64(str) { return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) { return String.fromCharCode('0x' + p1); })); }
@@ -194,8 +310,9 @@
     // --- نظام دخول اللاعبين ---
     async function login() {
         const name = document.getElementById('playerName').value.trim();
-        if (!name) return alert("الرجاء كتابة اسمك!");
+        if (!name) return alert("الرجاء كتابة اسمك للمشاركة!");
         document.getElementById('loginBtn').disabled = true;
+        document.getElementById('loginBtn').innerText = "جاري الدخول...";
         localStorage.setItem('player_name', name); localStorage.setItem('is_narrator', "false");
         await fetchDatabase();
         if (!gameData.waiting_players.includes(name)) { gameData.waiting_players.push(name); await saveDatabase(); }
@@ -203,7 +320,7 @@
     }
 
     function showNarratorLogin() {
-        if(prompt("أدخل رمز الراوي:") === NARRATOR_PASSWORD) {
+        if(prompt("أدخل رمز الراوي السري:") === NARRATOR_PASSWORD) {
             localStorage.setItem('is_narrator', "true");
             document.getElementById('loginArea').style.display = 'none'; document.getElementById('narratorArea').style.display = 'block';
             startSync();
@@ -216,7 +333,7 @@
 
     // --- المحرك التلقائي (يعمل فقط على متصفح الراوي) ---
     async function engineTick() {
-        if (localStorage.getItem('is_narrator') !== "true") return; // الراوي هو السيرفر فقط
+        if (localStorage.getItem('is_narrator') !== "true") return; 
         
         const now = Date.now();
         const playersCount = gameData.waiting_players.length;
@@ -224,7 +341,7 @@
         // 1. فحص الانتظار وبدء العد
         if (gameData.state === 'WAITING' && playersCount >= 4) {
             gameData.state = 'COUNTDOWN';
-            gameData.timer_end = now + (60 * 1000); // دقيقة واحدة للبدء
+            gameData.timer_end = now + (60 * 1000); 
             await saveDatabase();
         }
 
@@ -232,36 +349,35 @@
         if (gameData.state === 'COUNTDOWN' && now >= gameData.timer_end) {
             autoDistributeRoles();
             gameData.state = 'DAY'; gameData.day_number = 1; gameData.phase_name = 'نهار اليوم الأول (تعارف)';
-            gameData.timer_end = now + (3 * 60 * 1000); // 3 دقائق شات فقط
+            gameData.timer_end = now + (3 * 60 * 1000); 
             gameData.global_chat.push(`<b style="color:var(--accent);">[نظام] بدأت اللعبة! لديكم 3 دقائق للتعارف قبل حلول الليل.</b>`);
             await saveDatabase();
         }
 
         // 3. انتهاء النهار -> الانتقال لليل
         if (gameData.state === 'DAY' && now >= gameData.timer_end) {
-            gameData.state = 'NIGHT'; gameData.phase_name = 'الليل المظلم';
-            gameData.timer_end = now + (60 * 1000); // دقيقة واحدة لليل
+            gameData.state = 'NIGHT'; gameData.phase_name = 'الليل المظلم 🌙';
+            gameData.timer_end = now + (60 * 1000); 
             gameData.global_chat.push(`<b style="color:#9b59b6;">🌙 خيّم الليل، المافيا والأدوار الخاصة يقومون بعملهم الآن بصمت...</b>`);
-            gameData.votes = {}; gameData.night_actions = {}; // تصفية الأوامر
+            gameData.votes = {}; gameData.night_actions = {}; 
             await saveDatabase();
         }
 
         // 4. انتهاء الليل -> تصفية الحسابات وإعلان الصباح
         if (gameData.state === 'NIGHT' && now >= gameData.timer_end) {
-            processNightActions(); // تقتل/تعالج
+            processNightActions(); 
             
-            if(!checkWinCondition()) { // إذا لم ينتهي الجيم
-                gameData.state = 'DAY'; gameData.day_number++; gameData.phase_name = `نهار اليوم ${gameData.day_number}`;
-                gameData.timer_end = now + (2 * 60 * 1000); // دقيقتين نقاش
+            if(!checkWinCondition()) { 
+                gameData.state = 'DAY'; gameData.day_number++; gameData.phase_name = `نهار اليوم ${gameData.day_number} ☀️`;
+                gameData.timer_end = now + (2 * 60 * 1000); 
                 gameData.global_chat.push(`<b style="color:#f1c40f;">☀️ أشرق الصباح! لديكم دقيقتين للنقاش قبل فتح باب التصويت للإعدام.</b>`);
             }
             await saveDatabase();
         }
 
-        // 5. في النهار الثاني فما فوق، إذا بقي 30 ثانية يفتح التصويت
+        // 5. في النهار الثاني فما فوق، فتح التصويت
         if (gameData.state === 'DAY' && gameData.day_number > 1 && (gameData.timer_end - now) <= 30000 && (gameData.timer_end - now) > 28000) {
-            // نحدث الحالة فقط ليقرأ الكلاينت ويظهر التصويت
-            gameData.global_chat.push(`<b style="color:red;">⚖️ تم فتح باب التصويت للإعدام! أمامكم 30 ثانية للتصويت.</b>`);
+            gameData.global_chat.push(`<b style="color:#e74c3c;">⚖️ تم فتح باب التصويت للإعدام! أمامكم 30 ثانية للتصويت.</b>`);
             await saveDatabase();
         }
 
@@ -269,7 +385,7 @@
         if (gameData.state === 'DAY' && gameData.day_number > 1 && now >= gameData.timer_end) {
             processDayVotes();
             if(!checkWinCondition()) {
-                gameData.state = 'NIGHT'; gameData.phase_name = 'الليل';
+                gameData.state = 'NIGHT'; gameData.phase_name = 'الليل 🌙';
                 gameData.timer_end = now + (60 * 1000);
                 gameData.global_chat.push(`<b style="color:#9b59b6;">🌙 حل الليل مرة أخرى...</b>`);
             }
@@ -278,7 +394,7 @@
         }
     }
 
-    // --- المنطق التلقائي (التوزيع، القتل، الفوز) ---
+    // --- المنطق التلقائي ---
     function autoDistributeRoles() {
         let players = [...gameData.waiting_players].sort(() => 0.5 - Math.random());
         let allowed = gameData.allowed_roles || [];
@@ -292,7 +408,12 @@
                 gameData.player_teams[players[i]] = "mafia"; 
             } else if (i - mCount < allowed.length) {
                 gameData.player_roles[players[i]] = allowed[i - mCount];
-                gameData.player_teams[players[i]] = "village";
+                // العراب يُحسب مع المافيا
+                if (allowed[i - mCount] === "العراب") {
+                     gameData.player_teams[players[i]] = "mafia";
+                } else {
+                     gameData.player_teams[players[i]] = "village";
+                }
             } else {
                 gameData.player_roles[players[i]] = "مواطن صالح"; gameData.player_teams[players[i]] = "village";
             }
@@ -300,16 +421,15 @@
     }
 
     function processNightActions() {
-        // حصر أصوات المافيا
         let mafiaTarget = getHighestVote(gameData.votes);
         let healedTarget = gameData.night_actions['الطبيب'];
         
-        // التحقيق
+        // التحقيق (مثال على القدرات المبرمجة حالياً)
         let detTarget = gameData.night_actions['المحقق'];
         if(detTarget && gameData.player_roles) {
             let detName = Object.keys(gameData.player_roles).find(k => gameData.player_roles[k] === 'المحقق' && !gameData.dead_players[k]);
-            let isMafia = gameData.player_teams[detTarget] === 'mafia';
-            if(detName) gameData.global_chat.push(`<small style="color:gray;">(خاص للمحقق): نتيجة فحصك لـ ${detTarget} بأنه ${isMafia ? 'مافيا 🔪' : 'بريء 🕊️'}</small>`); // سيتم إخفاؤها برمجيا للمحقق فقط لاحقا
+            let isMafia = gameData.player_teams[detTarget] === 'mafia' && gameData.player_roles[detTarget] !== 'العراب';
+            if(detName) gameData.global_chat.push(`<small style="color:#bdc3c7;">(خاص للمحقق): نتيجة فحصك لـ ${detTarget} بأنه ${isMafia ? 'مافيا 🔪' : 'بريء 🕊️'}</small>`); 
         }
 
         if (mafiaTarget) {
@@ -317,7 +437,7 @@
                 gameData.global_chat.push(`<b>📢 أشرق الصباح، حاولت المافيا اغتيال شخص ولكن تم إنقاذه بأعجوبة من قبل الطبيب! 💉</b>`);
             } else {
                 gameData.dead_players[mafiaTarget] = gameData.player_roles[mafiaTarget];
-                gameData.global_chat.push(`<b style="color:red; font-size:16px;">💀 وجدنا جثة [${mafiaTarget}] ممزقة! كان دوره: ${gameData.player_roles[mafiaTarget]}</b>`);
+                gameData.global_chat.push(`<b style="color:#e74c3c; font-size:16px;">💀 وجدنا جثة [${mafiaTarget}] ممزقة! كان دوره: ${gameData.player_roles[mafiaTarget]}</b>`);
             }
         } else {
             gameData.global_chat.push(`<b>📢 صباح هادئ، لم يمت أحد الليلة الماضية.</b>`);
@@ -360,14 +480,14 @@
     // --- واجهة المستخدم والتزامن ---
     async function syncData() {
         await fetchDatabase(); 
-        if (localStorage.getItem('is_narrator') === "true") await engineTick(); // تشغيل المحرك
+        if (localStorage.getItem('is_narrator') === "true") await engineTick(); 
         updateUI();
     }
     
     function startSync() { 
         syncData(); 
         syncInterval = setInterval(syncData, 3000); 
-        localTimerInterval = setInterval(updateLocalTimers, 1000); // تحديث العداد شكلياً كل ثانية
+        localTimerInterval = setInterval(updateLocalTimers, 1000); 
     }
 
     function updateLocalTimers() {
@@ -391,7 +511,7 @@
             document.getElementById('waitingArea').style.display = 'none'; document.getElementById('gameArea').style.display = 'none'; document.getElementById('narratorArea').style.display = 'none';
             document.getElementById('winnerArea').style.display = 'block';
             let title = document.getElementById('winnerTitle');
-            if(gameData.winner === 'village') { title.innerText = "🎉 فاز المواطنون الشرفاء! تم القضاء على المافيا."; title.style.color = "var(--village-color)"; }
+            if(gameData.winner === 'village') { title.innerText = "🎉 فاز المواطنون الشرفاء! تم تطهير القرية."; title.style.color = "var(--village-color)"; }
             else { title.innerText = "🕴️ فازت المافيا! لقد سيطروا على القرية."; title.style.color = "var(--mafia-color)"; }
             return;
         }
@@ -405,20 +525,18 @@
                 document.getElementById('waitingArea').style.display = 'none'; document.getElementById('gameArea').style.display = 'block';
             }
             
-            // تحديث العلوية والشات
             updateTopPanelAndPhase(me);
             renderChat('globalChatBox', filterGlobalChat(gameData.global_chat || [], me), 'global-msg');
             if(!isNarrator && gameData.player_teams[me] === 'mafia') renderChat('mafiaChatBox', gameData.mafia_chat || [], 'mafia-msg');
         }
 
         if (isNarrator) {
-            document.getElementById('narratorWaitingList').innerHTML = gameData.waiting_players.map(p => `• ${p} ${gameData.dead_players[p] ? '💀' : ''} ${gameData.player_roles?.[p] ? `[${gameData.player_roles[p]}]` : ''}`).join('<br>');
+            document.getElementById('narratorWaitingList').innerHTML = gameData.waiting_players.map(p => `• <b>${p}</b> ${gameData.dead_players[p] ? '💀' : ''} ${gameData.player_roles?.[p] ? `<span style="color:var(--accent);">[${gameData.player_roles[p]}]</span>` : ''}`).join('<br>');
             renderChat('narratorGlobalChat', gameData.global_chat || [], 'global-msg');
         }
     }
 
     function filterGlobalChat(msgs, me) {
-        // تصفية الرسائل الخاصة (مثل رسالة المحقق)
         return msgs.filter(m => !m.includes('(خاص للمحقق)') || (gameData.player_roles[me] === 'المحقق'));
     }
 
@@ -427,22 +545,19 @@
         const isNight = gameData.state === 'NIGHT';
         const phaseInfo = document.getElementById('phaseIndicator');
         
-        // Panel
         document.getElementById('playersTopPanel').innerHTML = gameData.waiting_players.map(p => {
             if (gameData.dead_players[p]) return `<div class="player-badge dead">${p} 💀<br><span class="role-reveal">${gameData.dead_players[p]}</span></div>`;
             return `<div class="player-badge">${p}</div>`;
         }).join('');
 
-        // Phase Styling
         document.body.classList.toggle('night-mode', isNight);
         phaseInfo.className = isNight ? 'phase-indicator phase-night' : 'phase-indicator phase-day';
         phaseInfo.innerText = gameData.phase_name;
         
         if(!me) return;
-        document.getElementById('statusLabel').innerHTML = `👤 ${me} | 🎭 الدور: <b style="color:var(--accent);">${gameData.player_roles[me]}</b> ${isDead ? '<span style="color:red;">(ميت 💀)</span>' : ''}`;
+        document.getElementById('statusLabel').innerHTML = `👤 ${me} | 🎭 الدور: <b style="color:var(--accent); font-size: 18px;">${gameData.player_roles[me]}</b> ${isDead ? '<span style="color:#e74c3c;">(ميت 💀)</span>' : ''}`;
         document.getElementById('mafiaChatSection').style.display = (gameData.player_teams[me] === 'mafia') ? 'block' : 'none';
 
-        // Visibility of Voting / Special Actions
         const voteSec = document.getElementById('votingSection');
         const specSec = document.getElementById('specialRoleSection');
         voteSec.style.display = 'none'; specSec.style.display = 'none';
@@ -453,14 +568,22 @@
             let aliveOthers = gameData.waiting_players.filter(p => !gameData.dead_players[p] && p !== me);
             let opts = '<option value="">اختر لاعباً...</option>' + aliveOthers.map(p => `<option value="${p}">${p}</option>`).join('');
 
+            // قائمة الأدوار التي لها مهام ليلية تظهر في النظام
+            let specialRolesWithActions = ["الطبيب", "المحقق", "الحارس الشخصي", "المعطل", "القناص", "الساحرة"];
+
             if (isNight) {
-                if (gameData.player_teams[me] === 'mafia') {
+                if (gameData.player_teams[me] === 'mafia' && gameData.player_roles[me] !== "الجاسوس") {
                     voteSec.style.display = 'block'; document.getElementById('voteTitle').innerText = '🗡️ اغتيال المافيا';
                     document.getElementById('voteSelect').innerHTML = opts;
-                } else if (["الطبيب", "المحقق"].includes(gameData.player_roles[me])) {
+                } 
+                
+                // تفعيل قائمة المهام للأدوار الخاصة
+                if (specialRolesWithActions.includes(gameData.player_roles[me])) {
                     specSec.style.display = 'block';
-                    document.getElementById('specialTitle').innerText = gameData.player_roles[me] === 'الطبيب' ? '💉 الحماية' : '🔍 التحقيق';
-                    document.getElementById('specialSelect').innerHTML = '<option value="">اختر لاعباً...</option>' + gameData.waiting_players.filter(p=>!gameData.dead_players[p]).map(p => `<option value="${p}">${p}</option>`).join('');
+                    document.getElementById('specialTitle').innerText = `✨ مهمتك: ${gameData.player_roles[me]}`;
+                    // الساحرة والطبيب يحق لهم اختيار أنفسهم أحياناً، لكن سنتركها الآن لكل الأحياء
+                    let actionOpts = '<option value="">اختر لاعباً للتنفيذ...</option>' + gameData.waiting_players.filter(p=>!gameData.dead_players[p]).map(p => `<option value="${p}">${p}</option>`).join('');
+                    document.getElementById('specialSelect').innerHTML = actionOpts;
                 }
             } else if (gameData.day_number > 1 && leftSecs <= 30) {
                 voteSec.style.display = 'block'; document.getElementById('voteTitle').innerText = '⚖️ محكمة القرية (تصويت الإعدام)';
@@ -474,7 +597,7 @@
         document.getElementById('submitVoteBtn').disabled = true;
         await fetchDatabase(); if(!gameData.votes) gameData.votes = {};
         gameData.votes[localStorage.getItem('player_name')] = val; await saveDatabase();
-        document.getElementById('submitVoteBtn').innerText = "تم التصويت";
+        document.getElementById('submitVoteBtn').innerText = "تم التصويت ✔️";
     }
 
     async function submitSpecialAction() {
@@ -482,13 +605,13 @@
         document.getElementById('submitSpecialBtn').disabled = true;
         await fetchDatabase(); if(!gameData.night_actions) gameData.night_actions = {};
         gameData.night_actions[gameData.player_roles[localStorage.getItem('player_name')]] = val; await saveDatabase();
-        document.getElementById('submitSpecialBtn').innerText = "تم التنفيذ";
+        document.getElementById('submitSpecialBtn').innerText = "تم التنفيذ ✔️";
     }
 
     async function sendGlobalMsg() {
         const v = document.getElementById('globalChatInput').value.trim(); if(!v) return;
         document.getElementById('globalChatInput').value = "";
-        await fetchDatabase(); gameData.global_chat.push(`<b>${localStorage.getItem('player_name')}:</b> ${v}`); await saveDatabase(); syncData();
+        await fetchDatabase(); gameData.global_chat.push(`<b style="color:var(--accent);">${localStorage.getItem('player_name')}:</b> ${v}`); await saveDatabase(); syncData();
     }
     async function sendMafiaMsg() {
         const v = document.getElementById('mafiaChatInput').value.trim(); if(!v) return;
@@ -509,11 +632,19 @@
         if(document.getElementById('setDet').checked) arr.push("المحقق");
         if(document.getElementById('setGuard').checked) arr.push("الحارس الشخصي");
         if(document.getElementById('setHooker').checked) arr.push("المعطل");
-        gameData.allowed_roles = arr; alert("تم حفظ إعدادات الأدوار!");
+        if(document.getElementById('setSniper').checked) arr.push("القناص");
+        if(document.getElementById('setWitch').checked) arr.push("الساحرة");
+        if(document.getElementById('setMayor').checked) arr.push("العمدة");
+        if(document.getElementById('setGodfather').checked) arr.push("العراب");
+        if(document.getElementById('setSpy').checked) arr.push("الجاسوس");
+        
+        gameData.allowed_roles = arr; 
+        alert("تم حفظ إعدادات الأدوار بنجاح! ✔️");
+        saveDatabase();
     }
 
     async function clearAllData() {
-        if(confirm("متاكد من إعادة ضبط اللعبة بالكامل؟")) {
+        if(confirm("هل أنت متأكد من إعادة ضبط اللعبة بالكامل؟ سيتم مسح كل شيء!")) {
             gameData = { state: 'WAITING', phase_name: 'الانتظار', day_number: 1, timer_end: 0, waiting_players: [], player_roles: {}, player_teams: {}, dead_players: {}, global_chat: [], mafia_chat: [], votes: {}, night_actions: {}, allowed_roles: ["الطبيب", "المحقق"], winner: null };
             await saveDatabase(); localStorage.clear(); location.reload();
         }
