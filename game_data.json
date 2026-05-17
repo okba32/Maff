@@ -35,7 +35,9 @@
   ],
   "mafia_chat": [],
   "ghost_chat": [],
-  "votes": {},
+  "votes": {
+    "قاسم": "عقبه"
+  },
   "night_actions": {},
   "allowed_roles": [],
   "winner": null
