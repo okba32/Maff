@@ -150,8 +150,7 @@
 </div>
 
 <script>
-    // --- إعدادات الأدوار لتوزيعها عشوائياً بدون تكرار "مواطن" ---
-    // سيقوم النظام بتوزيعها بالترتيب، في حالة وجود لاعبين اثنين سيكون (زعيم مافيا وطبيب) وهكذا
+    // --- إعدادات الأدوار لتوزيعها عشوائياً ---
     const rolePool = [
         { name: "المافيا (الزعيم)", team: "mafia" },
         { name: "الطبيب", team: "village" },
@@ -360,13 +359,14 @@
         syncInterval = setInterval(syncData, 4000);
     }
 
-    // -- بدء اللعبة (خاص بالراوي) وتوزيع عشوائي --
+    // -- بدء اللعبة وتوزيع الأدوار حسب العدد (خاص بالراوي) --
     async function startGame() {
         await fetchDatabase();
         const players = gameData.waiting_players || [];
         
-        if (players.length < 2) {
-            return alert("تحتاج إلى لاعبين اثنين على الأقل لبدء اللعبة!");
+        // تم تغيير الحد الأدنى للبدء إلى 3 لاعبين لتطبيق القواعد
+        if (players.length < 3) {
+            return alert("تحتاج إلى ثلاثة لاعبين على الأقل لبدء اللعبة!");
         }
 
         // خلط اللاعبين (Random Shuffle)
@@ -375,11 +375,48 @@
         gameData.player_roles = {};
         gameData.player_teams = {};
 
-        // توزيع الأدوار المميزة
-        for (let i = 0; i < shuffledPlayers.length; i++) {
-            let roleObj = rolePool[i % rolePool.length]; // تتكرر الأدوار بترتيب القائمة إذا كان العدد كبيراً جداً
-            gameData.player_roles[shuffledPlayers[i]] = roleObj.name;
-            gameData.player_teams[shuffledPlayers[i]] = roleObj.team;
+        // === تطبيق القواعد الجديدة لتوزيع الأدوار === //
+        
+        if (players.length >= 3 && players.length <= 5) {
+            // القاعدة الأولى: 3 إلى 5 لاعبين
+            for (let i = 0; i < shuffledPlayers.length; i++) {
+                // اللاعب الأول في القائمة العشوائية يأخذ "مافيا"
+                if (i === 0) {
+                    gameData.player_roles[shuffledPlayers[i]] = "المافيا (عضو)";
+                    gameData.player_teams[shuffledPlayers[i]] = "mafia";
+                } else {
+                    // باقي اللاعبين "مواطن صالح"
+                    gameData.player_roles[shuffledPlayers[i]] = "مواطن صالح";
+                    gameData.player_teams[shuffledPlayers[i]] = "village";
+                }
+            }
+        } 
+        else if (players.length === 6) {
+            // القاعدة الثانية: 6 لاعبين بالضبط
+            const sixRoles = [
+                { name: "المافيا (الزعيم)", team: "mafia" },
+                { name: "الطبيب", team: "village" },
+                { name: "مواطن صالح", team: "village" },
+                { name: "مواطن صالح", team: "village" },
+                { name: "مواطن صالح", team: "village" },
+                { name: "مواطن صالح", team: "village" }
+            ];
+            
+            // خلط الأدوار لضمان عدم ارتباط دور معين بترتيب محدد
+            let shuffledRoles = [...sixRoles].sort(() => 0.5 - Math.random());
+            
+            for (let i = 0; i < shuffledPlayers.length; i++) {
+                gameData.player_roles[shuffledPlayers[i]] = shuffledRoles[i].name;
+                gameData.player_teams[shuffledPlayers[i]] = shuffledRoles[i].team;
+            }
+        } 
+        else if (players.length >= 7) {
+            // القاعدة الثالثة: 7 لاعبين أو أكثر
+            for (let i = 0; i < shuffledPlayers.length; i++) {
+                let roleObj = rolePool[i % rolePool.length];
+                gameData.player_roles[shuffledPlayers[i]] = roleObj.name;
+                gameData.player_teams[shuffledPlayers[i]] = roleObj.team;
+            }
         }
 
         gameData.game_started = true;
@@ -387,10 +424,10 @@
         // إشعار الراوي بالنظام
         if (!gameData.narrator_history) gameData.narrator_history = [];
         const time = new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
-        gameData.narrator_history.push(`<b style="color:var(--accent);">[نظام] ${time} - تم بدء اللعبة وتوزيع الأدوار</b>`);
+        gameData.narrator_history.push(`<b style="color:var(--accent);">[نظام] ${time} - تم بدء اللعبة وتوزيع الأدوار (${players.length} لاعبين)</b>`);
 
         await saveDatabase();
-        alert("تم خلط اللاعبين وتوزيع الأدوار عشوائياً بنجاح! اللعبة بدأت الآن.");
+        alert("تم خلط اللاعبين وتوزيع الأدوار بنجاح! اللعبة بدأت الآن.");
         syncData();
     }
 
@@ -426,7 +463,7 @@
         if (!msg) return;
 
         const player = localStorage.getItem('player_name');
-        const fullMsg = `<b>${player}:</b> ${msg}`; // إظهار الاسم فقط في الشات العام
+        const fullMsg = `<b>${player}:</b> ${msg}`;
 
         input.disabled = true;
         btn.disabled = true;
@@ -606,7 +643,6 @@
 
         const playerName = localStorage.getItem('player_name');
         
-        // إزالة اللاعب من قاعدة البيانات أولاً
         if (playerName) {
             await fetchDatabase();
             if (gameData.waiting_players) {
@@ -615,7 +651,6 @@
             }
         }
         
-        // مسح التخزين المحلي وإعادة تحميل الصفحة للرجوع للقائمة الرئيسية
         logout();
     }
 
@@ -655,4 +690,3 @@
 
 </body>
 </html>
-
