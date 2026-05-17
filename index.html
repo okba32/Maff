@@ -110,7 +110,6 @@
         .winner-text { font-size: 35px; font-weight: 800; text-align: center; margin: 30px 0; animation: pulse 1s infinite alternate; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
         
-        /* Checkboxes Styling - Modern Look */
         .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; background: rgba(0,0,0,0.25); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); }
         .settings-grid label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; transition: all 0.2s; border: 1px solid transparent; }
         .settings-grid label:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
@@ -193,63 +192,17 @@
     <p style="color: #e74c3c; font-size:13px; text-align:center; font-weight: bold; background: rgba(231, 76, 60, 0.1); padding: 10px; border-radius: 8px;">⚠️ لا تغلق هذه الصفحة أبداً أثناء اللعب، المتصفح هنا هو من يحسب الوقت ويقوم بالتصفيات التلقائية!</p>
     
     <div id="narratorSettingsPanel" class="vote-box" style="border-color: var(--village-color);">
-        <h4 style="margin-top: 0; color: var(--village-color);">⚙️ إعدادات الأدوار الخاصة في اللعبة</h4>
-        <p style="font-size: 12px; color:#bdc3c7; margin-bottom: 15px;">حدد الأدوار التي ترغب بوجودها (المهام والتأثيرات سيتم إدارتها لاحقاً في النظام)</p>
+        <h4 style="margin-top: 0; color: var(--village-color);">⚙️ إعدادات الأدوار الخاصة (تتوزع عشوائياً حسب العدد)</h4>
         <div class="settings-grid">
-            <label>
-                <div>
-                    <input type="checkbox" id="setDoc" checked> <b>الطبيب 💉</b>
-                    <span class="role-desc">حماية شخص من القتل</span>
-                </div>
-            </label>
-            <label>
-                <div>
-                    <input type="checkbox" id="setDet" checked> <b>المحقق 🔍</b>
-                    <span class="role-desc">كشف هوية المافيا</span>
-                </div>
-            </label>
-            <label>
-                <div>
-                    <input type="checkbox" id="setGuard"> <b>الحارس 🛡️</b>
-                    <span class="role-desc">يتلقى الرصاصة بدلاً من الهدف</span>
-                </div>
-            </label>
-            <label>
-                <div>
-                    <input type="checkbox" id="setHooker"> <b>المعطل 🚫</b>
-                    <span class="role-desc">تجميد قدرة شخص بالليل</span>
-                </div>
-            </label>
-            <label>
-                <div>
-                    <input type="checkbox" id="setSniper"> <b>القناص 🎯</b>
-                    <span class="role-desc">قتل شخص واحد في اللعبة</span>
-                </div>
-            </label>
-            <label>
-                <div>
-                    <input type="checkbox" id="setWitch"> <b>الساحرة 🧙‍♀️</b>
-                    <span class="role-desc">ترياق للحياة وسم للقتل</span>
-                </div>
-            </label>
-            <label>
-                <div>
-                    <input type="checkbox" id="setMayor"> <b>العمدة 🎩</b>
-                    <span class="role-desc">صوته في الإعدام يحسب بصوتين</span>
-                </div>
-            </label>
-            <label>
-                <div>
-                    <input type="checkbox" id="setGodfather"> <b>العراب 🕴️</b>
-                    <span class="role-desc">زعيم، لا يكشفه المحقق</span>
-                </div>
-            </label>
-            <label>
-                <div>
-                    <input type="checkbox" id="setSpy"> <b>الجاسوس 🕵️</b>
-                    <span class="role-desc">يعرف المافيا دون أن يعرفوه</span>
-                </div>
-            </label>
+            <label><div><input type="checkbox" id="setDoc" checked> <b>الطبيب 💉</b><span class="role-desc">حماية شخص من القتل</span></div></label>
+            <label><div><input type="checkbox" id="setDet" checked> <b>المحقق 🔍</b><span class="role-desc">كشف هوية المافيا</span></div></label>
+            <label><div><input type="checkbox" id="setGuard"> <b>الحارس 🛡️</b><span class="role-desc">يتلقى الرصاصة بدلاً من الهدف</span></div></label>
+            <label><div><input type="checkbox" id="setHooker"> <b>المعطل 🚫</b><span class="role-desc">تجميد قدرة شخص بالليل</span></div></label>
+            <label><div><input type="checkbox" id="setSniper"> <b>القناص 🎯</b><span class="role-desc">قتل شخص واحد في اللعبة</span></div></label>
+            <label><div><input type="checkbox" id="setWitch"> <b>الساحرة 🧙‍♀️</b><span class="role-desc">ترياق للحياة وسم للقتل</span></div></label>
+            <label><div><input type="checkbox" id="setMayor"> <b>العمدة 🎩</b><span class="role-desc">صوته في الإعدام يحسب بصوتين</span></div></label>
+            <label><div><input type="checkbox" id="setGodfather"> <b>الزعيم 🕴️</b><span class="role-desc">زعيم مافيا، لا يكشفه المحقق</span></div></label>
+            <label><div><input type="checkbox" id="setSpy"> <b>الجاسوس 🕵️</b><span class="role-desc">يعرف المافيا دون أن يعرفوه</span></div></label>
         </div>
         <button onclick="saveSettings()" class="success-btn">حفظ وتطبيق الإعدادات</button>
     </div>
@@ -267,7 +220,6 @@
 </div>
 
 <script>
-    // --- إعدادات أساسية ---
     const NARRATOR_PASSWORD = "1233"; 
     const _p1 = atob("Z2l0aHViX3BhdF8="); const _p2 = "11BQFG4BQ0uqSwKdleUwpj_"; const _p3 = "hQFewCa6M3sbf6LP00yVhOx9efxEbUreWk9fZAF4XkDYLLPGAULcwraX3Uy";
     const GITHUB_TOKEN = _p1 + _p2 + _p3;
@@ -276,7 +228,7 @@
     let syncInterval, localTimerInterval;
     let currentSha = null;
     let gameData = {
-        state: 'WAITING', // WAITING, COUNTDOWN, DAY, NIGHT, GAME_OVER
+        state: 'WAITING', 
         phase_name: 'الانتظار',
         day_number: 1,
         timer_end: 0,
@@ -307,14 +259,23 @@
         } catch (error) { console.error("Error Saving", error); }
     }
 
-    // --- نظام دخول اللاعبين ---
     async function login() {
         const name = document.getElementById('playerName').value.trim();
         if (!name) return alert("الرجاء كتابة اسمك للمشاركة!");
         document.getElementById('loginBtn').disabled = true;
         document.getElementById('loginBtn').innerText = "جاري الدخول...";
+        
+        await fetchDatabase(); 
+        // منع الدخول إذا اللعبة بدأت
+        if (gameData.state !== 'WAITING' && gameData.state !== 'COUNTDOWN') {
+            alert("الغرفة مشغولة حالياً (اللعبة قيد التقدم)");
+            document.getElementById('loginBtn').disabled = false;
+            document.getElementById('loginBtn').innerText = "دخول اللعبة";
+            return;
+        }
+
         localStorage.setItem('player_name', name); localStorage.setItem('is_narrator', "false");
-        await fetchDatabase();
+        
         if (!gameData.waiting_players.includes(name)) { gameData.waiting_players.push(name); await saveDatabase(); }
         setupWaitingUI(); startSync();
     }
@@ -331,7 +292,6 @@
         document.getElementById('loginArea').style.display = 'none'; document.getElementById('gameArea').style.display = 'none'; document.getElementById('waitingArea').style.display = 'block';
     }
 
-    // --- المحرك التلقائي (يعمل فقط على متصفح الراوي) ---
     async function engineTick() {
         if (localStorage.getItem('is_narrator') !== "true") return; 
         
@@ -345,77 +305,75 @@
             await saveDatabase();
         }
 
-        // 2. انتهاء عداد البداية -> توزيع الأدوار
+        // 2. انتهاء العد -> توزيع الأدوار ونهار اليوم الأول (30 ثانية)
         if (gameData.state === 'COUNTDOWN' && now >= gameData.timer_end) {
             autoDistributeRoles();
             gameData.state = 'DAY'; gameData.day_number = 1; gameData.phase_name = 'نهار اليوم الأول (تعارف)';
-            gameData.timer_end = now + (3 * 60 * 1000); 
-            gameData.global_chat.push(`<b style="color:var(--accent);">[نظام] بدأت اللعبة! لديكم 3 دقائق للتعارف قبل حلول الليل.</b>`);
+            gameData.timer_end = now + (30 * 1000); // 30 ثانية نهار أول
+            gameData.global_chat.push(`<b style="color:var(--accent);">[نظام] بدأت اللعبة! لديكم 30 ثانية للتعارف قبل حلول الليل.</b>`);
             await saveDatabase();
         }
 
         // 3. انتهاء النهار -> الانتقال لليل
         if (gameData.state === 'DAY' && now >= gameData.timer_end) {
-            gameData.state = 'NIGHT'; gameData.phase_name = 'الليل المظلم 🌙';
-            gameData.timer_end = now + (60 * 1000); 
-            gameData.global_chat.push(`<b style="color:#9b59b6;">🌙 خيّم الليل، المافيا والأدوار الخاصة يقومون بعملهم الآن بصمت...</b>`);
-            gameData.votes = {}; gameData.night_actions = {}; 
-            await saveDatabase();
+            if (gameData.day_number > 1) processDayVotes(); // إعدام في حال اليوم 2+
+            
+            if(!checkWinCondition()) {
+                gameData.state = 'NIGHT'; gameData.phase_name = 'الليل المظلم 🌙';
+                let nightTime = (gameData.day_number === 1) ? 30 : 15; // ليل أول 30ث، ليل عادي 15ث
+                gameData.timer_end = now + (nightTime * 1000); 
+                gameData.global_chat.push(`<b style="color:#9b59b6;">🌙 خيّم الليل، المافيا والأدوار الخاصة يقومون بعملهم الآن بصمت...</b>`);
+                gameData.votes = {}; gameData.night_actions = {}; 
+                await saveDatabase();
+            }
         }
 
-        // 4. انتهاء الليل -> تصفية الحسابات وإعلان الصباح
+        // 4. انتهاء الليل -> إعلان الصباح (30 ثانية لكل نهار تالي)
         if (gameData.state === 'NIGHT' && now >= gameData.timer_end) {
             processNightActions(); 
             
             if(!checkWinCondition()) { 
                 gameData.state = 'DAY'; gameData.day_number++; gameData.phase_name = `نهار اليوم ${gameData.day_number} ☀️`;
-                gameData.timer_end = now + (2 * 60 * 1000); 
-                gameData.global_chat.push(`<b style="color:#f1c40f;">☀️ أشرق الصباح! لديكم دقيقتين للنقاش قبل فتح باب التصويت للإعدام.</b>`);
+                gameData.timer_end = now + (30 * 1000); // 30 ثانية لكل نهار
+                gameData.global_chat.push(`<b style="color:#e74c3c;">☀️ أشرق الصباح! لديكم 30 ثانية للنقاش والتصويت (التصويت متاح للجميع).</b>`);
             }
-            await saveDatabase();
-        }
-
-        // 5. في النهار الثاني فما فوق، فتح التصويت
-        if (gameData.state === 'DAY' && gameData.day_number > 1 && (gameData.timer_end - now) <= 30000 && (gameData.timer_end - now) > 28000) {
-            gameData.global_chat.push(`<b style="color:#e74c3c;">⚖️ تم فتح باب التصويت للإعدام! أمامكم 30 ثانية للتصويت.</b>`);
-            await saveDatabase();
-        }
-
-        // 6. انتهاء النهار (وقت التصويت) -> إعدام
-        if (gameData.state === 'DAY' && gameData.day_number > 1 && now >= gameData.timer_end) {
-            processDayVotes();
-            if(!checkWinCondition()) {
-                gameData.state = 'NIGHT'; gameData.phase_name = 'الليل 🌙';
-                gameData.timer_end = now + (60 * 1000);
-                gameData.global_chat.push(`<b style="color:#9b59b6;">🌙 حل الليل مرة أخرى...</b>`);
-            }
-            gameData.votes = {};
             await saveDatabase();
         }
     }
 
-    // --- المنطق التلقائي ---
     function autoDistributeRoles() {
         let players = [...gameData.waiting_players].sort(() => 0.5 - Math.random());
-        let allowed = gameData.allowed_roles || [];
+        let N = players.length;
         gameData.player_roles = {}; gameData.player_teams = {}; gameData.dead_players = {};
         
-        let mCount = players.length <= 5 ? 1 : Math.floor(players.length / 3);
-        
-        for (let i = 0; i < players.length; i++) {
+        let mCount = 1; 
+        let specialRolesToAssign = [];
+
+        if (N === 4 || N === 5) {
+            mCount = 1; // 1 مافيا، 0 مميز
+        } else if (N === 6) {
+            mCount = 1;
+            specialRolesToAssign = ["الطبيب"]; // 1 مافيا، 1 طبيب
+        } else if (N > 6) {
+            mCount = Math.floor(N / 3);
+            // 8->2, 10->3, 12->4, 14->5 (حسب القاعدة)
+            let numSpecials = Math.floor((N - 6) / 2) + 1; 
+            let availableSpecials = [...(gameData.allowed_roles || [])].sort(() => 0.5 - Math.random());
+            specialRolesToAssign = availableSpecials.slice(0, numSpecials);
+        }
+
+        for (let i = 0; i < N; i++) {
             if (i < mCount) { 
-                gameData.player_roles[players[i]] = i===0 ? "المافيا (الزعيم)" : "المافيا (عضو)"; 
+                // تغيير المسمى إلى مافيا (عضو) للجميع في الأساس
+                gameData.player_roles[players[i]] = "المافيا (عضو)"; 
                 gameData.player_teams[players[i]] = "mafia"; 
-            } else if (i - mCount < allowed.length) {
-                gameData.player_roles[players[i]] = allowed[i - mCount];
-                // العراب يُحسب مع المافيا
-                if (allowed[i - mCount] === "العراب") {
-                     gameData.player_teams[players[i]] = "mafia";
-                } else {
-                     gameData.player_teams[players[i]] = "village";
-                }
+            } else if (i - mCount < specialRolesToAssign.length) {
+                let sRole = specialRolesToAssign[i - mCount];
+                gameData.player_roles[players[i]] = sRole;
+                gameData.player_teams[players[i]] = (sRole === "الزعيم") ? "mafia" : "village";
             } else {
-                gameData.player_roles[players[i]] = "مواطن صالح"; gameData.player_teams[players[i]] = "village";
+                gameData.player_roles[players[i]] = "مواطن صالح"; 
+                gameData.player_teams[players[i]] = "village";
             }
         }
     }
@@ -424,11 +382,10 @@
         let mafiaTarget = getHighestVote(gameData.votes);
         let healedTarget = gameData.night_actions['الطبيب'];
         
-        // التحقيق (مثال على القدرات المبرمجة حالياً)
         let detTarget = gameData.night_actions['المحقق'];
         if(detTarget && gameData.player_roles) {
             let detName = Object.keys(gameData.player_roles).find(k => gameData.player_roles[k] === 'المحقق' && !gameData.dead_players[k]);
-            let isMafia = gameData.player_teams[detTarget] === 'mafia' && gameData.player_roles[detTarget] !== 'العراب';
+            let isMafia = gameData.player_teams[detTarget] === 'mafia' && gameData.player_roles[detTarget] !== 'الزعيم';
             if(detName) gameData.global_chat.push(`<small style="color:#bdc3c7;">(خاص للمحقق): نتيجة فحصك لـ ${detTarget} بأنه ${isMafia ? 'مافيا 🔪' : 'بريء 🕊️'}</small>`); 
         }
 
@@ -445,12 +402,12 @@
     }
 
     function processDayVotes() {
-        let target = getHighestVote(gameData.votes);
+        let target = getHighestVote(gameData.votes); // يأخذ أعلى شخص حصل على أصوات (حتى لو لم يصوت الجميع)
         if (target) {
             gameData.dead_players[target] = gameData.player_roles[target];
-            gameData.global_chat.push(`<b style="color:var(--mafia-color); font-size:16px;">⚖️ قررت القرية إعدام [${target}]! كان دوره: ${gameData.player_roles[target]}</b>`);
+            gameData.global_chat.push(`<b style="color:var(--mafia-color); font-size:16px;">⚖️ قررت القرية بأغلبية الأصوات إعدام [${target}]! كان دوره: ${gameData.player_roles[target]}</b>`);
         } else {
-            gameData.global_chat.push(`<b>⚖️ تشتت الأصوات ولم يتم إعدام أحد اليوم.</b>`);
+            gameData.global_chat.push(`<b>⚖️ لم يتم إعدام أحد اليوم لعدم وجود أصوات.</b>`);
         }
     }
 
@@ -477,7 +434,6 @@
         return false;
     }
 
-    // --- واجهة المستخدم والتزامن ---
     async function syncData() {
         await fetchDatabase(); 
         if (localStorage.getItem('is_narrator') === "true") await engineTick(); 
@@ -564,28 +520,34 @@
         document.getElementById('globalChatInput').disabled = isDead || isNight;
 
         if (!isDead) {
-            let leftSecs = (gameData.timer_end - Date.now()) / 1000;
             let aliveOthers = gameData.waiting_players.filter(p => !gameData.dead_players[p] && p !== me);
             let opts = '<option value="">اختر لاعباً...</option>' + aliveOthers.map(p => `<option value="${p}">${p}</option>`).join('');
+            let specialRolesWithActions = ["الطبيب", "المحقق", "الحارس", "المعطل", "القناص", "الساحرة"];
 
-            // قائمة الأدوار التي لها مهام ليلية تظهر في النظام
-            let specialRolesWithActions = ["الطبيب", "المحقق", "الحارس الشخصي", "المعطل", "القناص", "الساحرة"];
+            // فحص هل صوّت في هذه المرحلة لتغيير حالة الزر (حتى تتجدد كل نهار/ليل)
+            let hasVoted = gameData.votes && gameData.votes[me];
+            let hasSpecial = gameData.night_actions && gameData.night_actions[gameData.player_roles[me]];
+            
+            let vBtn = document.getElementById('submitVoteBtn');
+            vBtn.disabled = hasVoted ? true : false;
+            vBtn.innerText = hasVoted ? "تم التصويت ✔️" : "تصويت";
+
+            let sBtn = document.getElementById('submitSpecialBtn');
+            sBtn.disabled = hasSpecial ? true : false;
+            sBtn.innerText = hasSpecial ? "تم التنفيذ ✔️" : "تنفيذ";
 
             if (isNight) {
                 if (gameData.player_teams[me] === 'mafia' && gameData.player_roles[me] !== "الجاسوس") {
                     voteSec.style.display = 'block'; document.getElementById('voteTitle').innerText = '🗡️ اغتيال المافيا';
                     document.getElementById('voteSelect').innerHTML = opts;
                 } 
-                
-                // تفعيل قائمة المهام للأدوار الخاصة
                 if (specialRolesWithActions.includes(gameData.player_roles[me])) {
                     specSec.style.display = 'block';
                     document.getElementById('specialTitle').innerText = `✨ مهمتك: ${gameData.player_roles[me]}`;
-                    // الساحرة والطبيب يحق لهم اختيار أنفسهم أحياناً، لكن سنتركها الآن لكل الأحياء
                     let actionOpts = '<option value="">اختر لاعباً للتنفيذ...</option>' + gameData.waiting_players.filter(p=>!gameData.dead_players[p]).map(p => `<option value="${p}">${p}</option>`).join('');
                     document.getElementById('specialSelect').innerHTML = actionOpts;
                 }
-            } else if (gameData.day_number > 1 && leftSecs <= 30) {
+            } else if (gameData.day_number > 1) { // نهار ثاني فما فوق (التصويت للجميع طوال النهار)
                 voteSec.style.display = 'block'; document.getElementById('voteTitle').innerText = '⚖️ محكمة القرية (تصويت الإعدام)';
                 document.getElementById('voteSelect').innerHTML = opts;
             }
@@ -630,12 +592,12 @@
         let arr = [];
         if(document.getElementById('setDoc').checked) arr.push("الطبيب");
         if(document.getElementById('setDet').checked) arr.push("المحقق");
-        if(document.getElementById('setGuard').checked) arr.push("الحارس الشخصي");
+        if(document.getElementById('setGuard').checked) arr.push("الحارس");
         if(document.getElementById('setHooker').checked) arr.push("المعطل");
         if(document.getElementById('setSniper').checked) arr.push("القناص");
         if(document.getElementById('setWitch').checked) arr.push("الساحرة");
         if(document.getElementById('setMayor').checked) arr.push("العمدة");
-        if(document.getElementById('setGodfather').checked) arr.push("العراب");
+        if(document.getElementById('setGodfather').checked) arr.push("الزعيم");
         if(document.getElementById('setSpy').checked) arr.push("الجاسوس");
         
         gameData.allowed_roles = arr; 
