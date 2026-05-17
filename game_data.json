@@ -35,7 +35,9 @@
   "votes": {
     "د": "عقبه"
   },
-  "night_actions": {},
+  "night_actions": {
+    "الطبيب": "عقبه"
+  },
   "allowed_roles": [
     "الطبيب",
     "المحقق"
