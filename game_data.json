@@ -35,7 +35,9 @@
   ],
   "mafia_chat": [],
   "votes": {},
-  "night_actions": {},
+  "night_actions": {
+    "المحقق": "ت"
+  },
   "allowed_roles": [
     "الطبيب",
     "المحقق"
