@@ -32,7 +32,9 @@
   "mafia_chat": [
     "<b>د:</b> ا"
   ],
-  "votes": {},
+  "votes": {
+    "د": "عقبه"
+  },
   "night_actions": {},
   "allowed_roles": [
     "الطبيب",
