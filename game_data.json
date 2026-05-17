@@ -42,7 +42,9 @@
     "<b>د:</b> ا"
   ],
   "votes": {},
-  "night_actions": {},
+  "night_actions": {
+    "المحقق": "قاسم"
+  },
   "allowed_roles": [
     "الطبيب",
     "المحقق"
