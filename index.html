@@ -70,6 +70,8 @@
     <div class="waiting-loader"></div>
     <p>في انتظار قيام الراوي ببدء اللعبة وتوزيع الأدوار...</p>
     <div id="waitingPlayersCount" style="margin-top:15px; color:var(--accent);"></div>
+    
+    <button id="leaveWaitingBtn" onclick="leaveWaitingRoom()" class="back-btn" style="margin-top: 20px;">رجوع (إلغاء الانتظار)</button>
 </div>
 
 <div class="container" id="gameArea">
@@ -596,6 +598,27 @@
         location.reload();
     }
 
+    // -- دالة الرجوع من غرفة الانتظار --
+    async function leaveWaitingRoom() {
+        const btn = document.getElementById('leaveWaitingBtn');
+        btn.disabled = true;
+        btn.innerText = "جاري الخروج...";
+
+        const playerName = localStorage.getItem('player_name');
+        
+        // إزالة اللاعب من قاعدة البيانات أولاً
+        if (playerName) {
+            await fetchDatabase();
+            if (gameData.waiting_players) {
+                gameData.waiting_players = gameData.waiting_players.filter(name => name !== playerName);
+                await saveDatabase();
+            }
+        }
+        
+        // مسح التخزين المحلي وإعادة تحميل الصفحة للرجوع للقائمة الرئيسية
+        logout();
+    }
+
     async function clearAllData() {
         if(confirm("هل أنت متأكد من مسح جميع بيانات اللعبة من السيرفر؟ (هذا سيحذف جميع اللاعبين والأدوار وسيعيد اللعبة لنقطة الصفر)")) {
             gameData = {
@@ -632,3 +655,4 @@
 
 </body>
 </html>
+
