@@ -1,7 +1,8 @@
 {
   "waiting_players": [
     "مصلح",
-    "حاتم"
+    "حاتم",
+    "عقبه"
   ],
   "player_roles": {
     "مصلح": "المافيا (الزعيم)",
@@ -14,10 +15,15 @@
     "حاتم": "village"
   },
   "game_started": true,
+  "global_chat": [
+    "<b>حاتم:</b> Hi"
+  ],
+  "mafia_chat": [],
   "narrator_history": [
     "<b style=\"color:var(--accent);\">[نظام] ١٠:٥٨ م - تم بدء اللعبة وتوزيع الأدوار</b>"
   ],
-  "global_chat": [
-    "<b>حاتم:</b> Hi"
-  ]
+  "notifications": {},
+  "phase": "day",
+  "dead_players": {},
+  "votes": {}
 }
