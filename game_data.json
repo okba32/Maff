@@ -5,12 +5,24 @@
     "عقبه١",
     "H"
   ],
-  "player_roles": {},
-  "player_teams": {},
-  "game_started": false,
+  "player_roles": {
+    "عقبه٢": "المافيا (عضو)",
+    "H": "مواطن صالح",
+    "مصلح": "مواطن صالح",
+    "عقبه١": "مواطن صالح"
+  },
+  "player_teams": {
+    "عقبه٢": "mafia",
+    "H": "village",
+    "مصلح": "village",
+    "عقبه١": "village"
+  },
+  "game_started": true,
   "global_chat": [],
   "mafia_chat": [],
-  "narrator_history": [],
+  "narrator_history": [
+    "<b style=\"color:var(--accent);\">[نظام] ١١:٤٨ م - تم بدء اللعبة (4 لاعبين)</b>"
+  ],
   "notifications": {},
   "phase": "day",
   "dead_players": {},
