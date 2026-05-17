@@ -1,8 +1,8 @@
 {
-  "state": "DAY",
-  "phase_name": "نهار اليوم 2 ☀️",
+  "state": "NIGHT",
+  "phase_name": "الليل المظلم 🌙",
   "day_number": 2,
-  "timer_end": 1779047847233,
+  "timer_end": 1779047865211,
   "waiting_players": [
     "قاسم",
     "عقبه",
@@ -29,14 +29,13 @@
     "<b style=\"color:var(--accent);\">عقبه:</b> سلام",
     "<b style=\"color:#9b59b6;\">🌙 خيّم الليل، المافيا والأدوار الخاصة يقومون بعملهم الآن بصمت...</b>",
     "<b style=\"color:#e74c3c; font-size:16px;\">💀 وجدنا جثة [M] ممزقة! كان دوره: مواطن صالح</b>",
-    "<b style=\"color:#e74c3c;\">☀️ أشرق الصباح! لديكم 30 ثانية للنقاش والتصويت.</b>"
+    "<b style=\"color:#e74c3c;\">☀️ أشرق الصباح! لديكم 30 ثانية للنقاش والتصويت.</b>",
+    "<b style=\"color:var(--mafia-color); font-size:16px;\">⚖️ أعدمت القرية [M]! كان دوره: مواطن صالح</b>",
+    "<b style=\"color:#9b59b6;\">🌙 خيّم الليل، المافيا والأدوار الخاصة يقومون بعملهم الآن بصمت...</b>"
   ],
   "mafia_chat": [],
   "ghost_chat": [],
-  "votes": {
-    "قاسم": "M",
-    "A": "عقبه"
-  },
+  "votes": {},
   "night_actions": {},
   "allowed_roles": [],
   "winner": null
