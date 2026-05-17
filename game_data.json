@@ -37,5 +37,7 @@
   "notifications": {},
   "phase": "night",
   "dead_players": {},
-  "votes": {}
+  "votes": {
+    "عقبه٢": "عقبه١"
+  }
 }
