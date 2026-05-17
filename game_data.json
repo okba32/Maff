@@ -1,73 +1,19 @@
 {
-  "state": "COUNTDOWN",
+  "state": "WAITING",
   "phase_name": "الانتظار",
   "day_number": 1,
-  "timer_end": 1778992774809,
-  "waiting_players": [
-    "مصلح",
-    "عقبه٢",
-    "عقبه١",
-    "H"
-  ],
-  "player_roles": {
-    "عقبه٢": "المافيا (عضو)",
-    "H": "مواطن صالح",
-    "مصلح": "مواطن صالح",
-    "عقبه١": "مواطن صالح"
-  },
-  "player_teams": {
-    "عقبه٢": "mafia",
-    "H": "village",
-    "مصلح": "village",
-    "عقبه١": "village"
-  },
-  "dead_players": {
-    "عقبه١": "مواطن صالح",
-    "H": "مواطن صالح",
-    "مصلح": "مواطن صالح"
-  },
-  "global_chat": [
-    "<b>عقبه١:</b> مرحبا",
-    "<b>مصلح:</b> مربحا",
-    "<b>H:</b> Hi",
-    "<b>عقبه١:</b> كيفكم",
-    "<b>مصلح:</b> جاهز صالح",
-    "<b>عقبه١:</b> يعني",
-    "<b>H:</b> تمام",
-    "<b>عقبه١:</b> اجرب ذلحين",
-    "<b>عقبه١:</b> ايش نسوي",
-    "<b style=\"color:var(--accent); display:block; text-align:center; padding:5px; background:rgba(0,0,0,0.5); border-radius:5px;\">🌙 خيّم الليل</b>",
-    "<b style=\"color:red; font-size:15px;\">💀 تم الإعلان عن وفاة [عقبه١]! كان دوره: مواطن صالح</b>",
-    "<b style=\"color:var(--accent); display:block; text-align:center; padding:5px; background:rgba(0,0,0,0.5); border-radius:5px;\">☀️ حلّ النهار</b>",
-    "<b>عقبه٢:</b> كيف اتغير النهار",
-    "<b>عقبه٢:</b> دقو عقبه ١",
-    "<b>عقبه٢:</b> من تصوتو",
-    "<b>مصلح:</b> قد عملنا عقبه ١ اول وانتهى",
-    "<b>مصلح:</b> عملتو الان H",
-    "<b>عقبه٢:</b> اها",
-    "<b>عقبه٢:</b> وانا h",
-    "<b>مصلح:</b> قد طلع تم الإعلان عن وفاه عقبه ١",
-    "<b style=\"color:red; font-size:15px;\">💀 تم الإعلان عن وفاة [H]! كان دوره: مواطن صالح</b>",
-    "<b>مصلح:</b> والان وفاه H",
-    "<b>عقبه٢:</b> طلع مش هو",
-    "<b style=\"color:var(--accent); display:block; text-align:center; padding:5px; background:rgba(0,0,0,0.5); border-radius:5px;\">🌙 خيّم الليل</b>",
-    "<b>مصلح:</b> مش وقت العبه الحين خلنا نخزن",
-    "<b style=\"color:red; font-size:15px;\">💀 تم الإعلان عن وفاة [مصلح]! كان دوره: مواطن صالح</b>"
-  ],
-  "mafia_chat": [
-    "<b>عقبه٢:</b> مين"
-  ],
+  "timer_end": 0,
+  "waiting_players": [],
+  "player_roles": {},
+  "player_teams": {},
+  "dead_players": {},
+  "global_chat": [],
+  "mafia_chat": [],
   "votes": {},
   "night_actions": {},
   "allowed_roles": [
     "الطبيب",
     "المحقق"
   ],
-  "winner": null,
-  "game_started": true,
-  "narrator_history": [
-    "<b style=\"color:var(--accent);\">[نظام] ١١:٤٨ م - تم بدء اللعبة (4 لاعبين)</b>"
-  ],
-  "notifications": {},
-  "phase": "night"
+  "winner": null
 }
