@@ -20,7 +20,8 @@
   "game_started": true,
   "global_chat": [
     "<b>عقبه١:</b> مرحبا",
-    "<b>مصلح:</b> مربحا"
+    "<b>مصلح:</b> مربحا",
+    "<b>H:</b> Hi"
   ],
   "mafia_chat": [],
   "narrator_history": [
