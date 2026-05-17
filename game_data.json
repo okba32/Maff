@@ -27,17 +27,15 @@
     "<b>عقبه١:</b> يعني",
     "<b>H:</b> تمام",
     "<b>عقبه١:</b> اجرب ذلحين",
-    "<b>عقبه١:</b> ايش نسوي"
+    "<b>عقبه١:</b> ايش نسوي",
+    "<b style=\"color:var(--accent); display:block; text-align:center; padding:5px; background:rgba(0,0,0,0.5); border-radius:5px;\">🌙 خيّم الليل</b>"
   ],
   "mafia_chat": [],
   "narrator_history": [
     "<b style=\"color:var(--accent);\">[نظام] ١١:٤٨ م - تم بدء اللعبة (4 لاعبين)</b>"
   ],
   "notifications": {},
-  "phase": "day",
+  "phase": "night",
   "dead_players": {},
-  "votes": {
-    "مصلح": "عقبه١",
-    "H": "عقبه٢"
-  }
+  "votes": {}
 }
