@@ -16,7 +16,9 @@
     "خالد": "village"
   },
   "game_started": true,
-  "global_chat": [],
+  "global_chat": [
+    "<b>عقبه:</b> اخروجو"
+  ],
   "mafia_chat": [],
   "narrator_history": [
     "<b style=\"color:var(--accent);\">[نظام] ١١:٤٥ م - تم بدء اللعبة (3 لاعبين)</b>"
