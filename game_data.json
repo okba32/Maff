@@ -38,7 +38,8 @@
   "mafia_chat": [],
   "votes": {
     "حمود": "A",
-    "A": "حمود"
+    "A": "حمود",
+    "B": "حمود"
   },
   "night_actions": {},
   "allowed_roles": [
