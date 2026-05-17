@@ -9,11 +9,9 @@
   "dead_players": {},
   "global_chat": [],
   "mafia_chat": [],
+  "ghost_chat": [],
   "votes": {},
   "night_actions": {},
-  "allowed_roles": [
-    "الطبيب",
-    "المحقق"
-  ],
+  "allowed_roles": [],
   "winner": null
 }
