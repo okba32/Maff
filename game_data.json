@@ -1,5 +1,7 @@
 {
-  "waiting_players": [],
+  "waiting_players": [
+    "خالد"
+  ],
   "player_roles": {},
   "player_teams": {},
   "game_started": false,
