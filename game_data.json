@@ -18,7 +18,9 @@
     "عقبه١": "village"
   },
   "game_started": true,
-  "global_chat": [],
+  "global_chat": [
+    "<b>عقبه١:</b> مرحبا"
+  ],
   "mafia_chat": [],
   "narrator_history": [
     "<b style=\"color:var(--accent);\">[نظام] ١١:٤٨ م - تم بدء اللعبة (4 لاعبين)</b>"
