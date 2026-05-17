@@ -1,4 +1,8 @@
 {
+  "state": "COUNTDOWN",
+  "phase_name": "الانتظار",
+  "day_number": 1,
+  "timer_end": 1778992774809,
   "waiting_players": [
     "مصلح",
     "عقبه٢",
@@ -17,7 +21,11 @@
     "مصلح": "village",
     "عقبه١": "village"
   },
-  "game_started": true,
+  "dead_players": {
+    "عقبه١": "مواطن صالح",
+    "H": "مواطن صالح",
+    "مصلح": "مواطن صالح"
+  },
   "global_chat": [
     "<b>عقبه١:</b> مرحبا",
     "<b>مصلح:</b> مربحا",
@@ -49,15 +57,17 @@
   "mafia_chat": [
     "<b>عقبه٢:</b> مين"
   ],
+  "votes": {},
+  "night_actions": {},
+  "allowed_roles": [
+    "الطبيب",
+    "المحقق"
+  ],
+  "winner": null,
+  "game_started": true,
   "narrator_history": [
     "<b style=\"color:var(--accent);\">[نظام] ١١:٤٨ م - تم بدء اللعبة (4 لاعبين)</b>"
   ],
   "notifications": {},
-  "phase": "night",
-  "dead_players": {
-    "عقبه١": "مواطن صالح",
-    "H": "مواطن صالح",
-    "مصلح": "مواطن صالح"
-  },
-  "votes": {}
+  "phase": "night"
 }
