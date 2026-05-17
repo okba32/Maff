@@ -1,29 +1,11 @@
 {
-  "waiting_players": [
-    "مصلح",
-    "حاتم",
-    "عقبه",
-    "طلال",
-    "قاسم"
-  ],
-  "player_roles": {
-    "مصلح": "المافيا (الزعيم)",
-    "عقبه": "الطبيب",
-    "حاتم": "المحقق"
-  },
-  "player_teams": {
-    "مصلح": "mafia",
-    "عقبه": "village",
-    "حاتم": "village"
-  },
-  "game_started": true,
-  "global_chat": [
-    "<b>حاتم:</b> Hi"
-  ],
+  "waiting_players": [],
+  "player_roles": {},
+  "player_teams": {},
+  "game_started": false,
+  "global_chat": [],
   "mafia_chat": [],
-  "narrator_history": [
-    "<b style=\"color:var(--accent);\">[نظام] ١٠:٥٨ م - تم بدء اللعبة وتوزيع الأدوار</b>"
-  ],
+  "narrator_history": [],
   "notifications": {},
   "phase": "day",
   "dead_players": {},
