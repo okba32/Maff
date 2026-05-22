@@ -347,7 +347,7 @@
         }
     }
 
-    async function engineTick() {
+        async function engineTick() {
         if (localStorage.getItem('is_narrator') !== "true") return; 
         
         const now = Date.now();
@@ -365,6 +365,7 @@
             await saveDatabase();
         }
 
+        // انتهاء النهار وبداية الليل
         if (gameData.state === 'DAY' && now >= gameData.timer_end) {
             if (gameData.day_number > 1) processDayVotes(); 
             
@@ -373,21 +374,29 @@
                 let nightTime = (gameData.day_number === 1) ? 30 : 15; 
                 gameData.timer_end = now + (nightTime * 1000); 
                 gameData.global_chat.push(`<b style="color:#9b59b6;">🌙 خيّم الليل، المافيا والأدوار الخاصة يقومون بعملهم الآن بصمت...</b>`);
+                
+                // تصفير التصويتات والقدرات لتبدأ الليلة نظيفة
                 gameData.votes = {}; gameData.night_actions = {}; 
                 await saveDatabase();
             }
         }
 
+        // انتهاء الليل وبداية النهار
         if (gameData.state === 'NIGHT' && now >= gameData.timer_end) {
             processNightActions(); 
             if(!checkWinCondition()) { 
                 gameData.state = 'DAY'; gameData.day_number++; gameData.phase_name = `نهار اليوم ${gameData.day_number} ☀️`;
                 gameData.timer_end = now + (30 * 1000); 
                 gameData.global_chat.push(`<b style="color:#e74c3c;">☀️ أشرق الصباح! لديكم 30 ثانية للنقاش والتصويت.</b>`);
+                
+                // 🔥 الإصلاح هنا: تصفير التصويتات والقدرات مرة أخرى ليبدأ النهار نظيفاً للجميع (بما فيهم المافيا)
+                gameData.votes = {}; 
+                gameData.night_actions = {}; 
             }
             await saveDatabase();
         }
     }
+
 
     function autoDistributeRoles() {
         let players = [...gameData.waiting_players].sort(() => 0.5 - Math.random());
