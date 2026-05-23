@@ -3,9 +3,7 @@
   "phase_name": "الانتظار",
   "day_number": 1,
   "timer_end": 0,
-  "waiting_players": [
-    "عال"
-  ],
+  "waiting_players": [],
   "player_roles": {},
   "player_teams": {},
   "dead_players": {},
